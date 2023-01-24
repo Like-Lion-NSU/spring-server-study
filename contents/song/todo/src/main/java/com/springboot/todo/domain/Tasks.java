@@ -30,7 +30,7 @@ public class Tasks {
         this.user = user;
     }
 
-    public static Tasks createTasks(String items, User user, Todo todo){
+    public static Tasks tasks(String items, User user, Todo todo){
         Tasks tasks = new Tasks();
         tasks.items = items;
         tasks.user = user;
