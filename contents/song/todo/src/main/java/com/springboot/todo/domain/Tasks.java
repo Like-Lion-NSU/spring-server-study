@@ -36,6 +36,5 @@ public class Tasks {
         tasks.user = user;
         tasks.todo = todo;
         return tasks;
-
     }
 }
