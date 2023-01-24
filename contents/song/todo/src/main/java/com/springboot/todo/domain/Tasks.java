@@ -2,7 +2,12 @@ package com.springboot.todo.domain;
 
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Entity
+@NoArgsConstructor
+@Data
 public class Tasks {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
