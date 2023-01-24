@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 @Data
 @NoArgsConstructor
 public class User implements UserDetails{
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
