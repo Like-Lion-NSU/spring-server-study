@@ -27,7 +27,7 @@ public class Todo{
     private LocalDateTime updatedDate;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "user")
     private User user;
 
 }
