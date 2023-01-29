@@ -3,7 +3,6 @@ package com.example.young.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @Entity
 @Data
@@ -13,14 +12,13 @@ public class Contents {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ID;
 
-    @ManyToOne
-    @JoinColumn(name = "User")
+
     @Column(nullable = false)
-    private User loginId;
+    private String loginId;
 
     @Column
-    private String list;
+    private String doIt;
 
     @Column
-    private boolean check;
+    private boolean doCheck;
 }
