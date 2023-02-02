@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepo {
-    User save(User contents);
-    Optional<User> findByID(Long ID);
-    Optional<User> findByloginId(String loginId);
+    User save(User user);
+    Optional<User> findById(Long id);
+    Optional<User> findByUserId(String userId);
     List<User> findAll();
 }

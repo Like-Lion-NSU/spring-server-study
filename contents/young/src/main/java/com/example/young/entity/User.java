@@ -3,6 +3,10 @@ package com.example.young.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -10,14 +14,18 @@ import lombok.NoArgsConstructor;
 public class User {
     @Id
     @GeneratedValue(strategy =GenerationType.IDENTITY)
-    private long ID;
+    private long id;
 
     @Column(nullable = false)
-    private String loginId;
+    private String userId;
 
     @Column(nullable = false)
-    private String loginPassWord;
+    private String passWord;
 
     @Column(nullable = false)
-    private String nickName;
+    private String name;
+
+    @OneToMany(mappedBy = "User")
+    private List<Todo> todoList = new ArrayList<>();
+
 }

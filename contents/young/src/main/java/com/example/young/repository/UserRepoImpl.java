@@ -9,19 +9,19 @@ public class UserRepoImpl implements UserRepo {
 
     @Override
     public User save(User user){
-        user.setID(++sequence);
-        store.put(user.getID(), user);
+        user.setId(++sequence);
+        store.put(user.getId(), user);
         return user;
     }
 
     @Override
-    public Optional<User> findByID(Long ID) {
-        return Optional.ofNullable(store.get(ID));
+    public Optional<User> findById(Long id) {
+        return Optional.ofNullable(store.get(id));
     }
 
     @Override
-    public Optional<User> findByloginId(String loginId) {
-        return store.values().stream().filter(user->user.getLoginId().equals(loginId)).findFirst();
+    public Optional<User> findByUserId(String userId) {
+        return store.values().stream().filter(user->user.getUserId().equals(userId)).findFirst();
     }
 
     @Override
