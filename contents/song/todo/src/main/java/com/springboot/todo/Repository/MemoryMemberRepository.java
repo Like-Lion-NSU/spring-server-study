@@ -1,7 +1,7 @@
 package com.springboot.todo.Repository;
 
 
-import com.springboot.todo.entity.User;
+import com.springboot.todo.Entity.User;
 
 import java.util.*;
 
@@ -24,7 +24,7 @@ public class MemoryMemberRepository implements MemberRepository{
 
     @Override
     public Optional<User> findByUid(String uid) {
-        return store.values().stream().filter(user->user.getUid().equals(uid)).findAny();
+        return store.values().stream().filter(user->user.getUserId().equals(uid)).findAny();
     }
 
     @Override

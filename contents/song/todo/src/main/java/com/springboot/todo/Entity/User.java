@@ -1,10 +1,9 @@
-package com.springboot.todo.entity;
+package com.springboot.todo.Entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +16,7 @@ public class User{
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String uid;
+    private String userId;
 
     @Column(nullable = false)
     private String password;
@@ -25,12 +24,8 @@ public class User{
     @Column(nullable = false)
     private String name;
 
-    private LocalDateTime createdDate;
-
-    private LocalDateTime updatedDate;
-
     @OneToMany(mappedBy = "user")
-    private List<Todo> todo = new ArrayList<>();
+    private List<Todo> todoList = new ArrayList<>();
 
 //    @ElementCollection(fetch = FetchType.EAGER)
 //    private List<String> roles = new ArrayList<>();

@@ -1,7 +1,6 @@
-package com.springboot.todo.entity;
+package com.springboot.todo.Entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,17 +16,17 @@ public class Todo{
     private Long id;
 
     @Column(nullable=false)
-    private String items;
+    private String item;
 
     @Column(nullable=false)
-    private Boolean status;
+    private Boolean isDone;
 
     private LocalDateTime createdDate;
 
     private LocalDateTime updatedDate;
 
     @ManyToOne
-    @JoinColumn(name = "user")
+    @JoinColumn(name="user_id")
     private User user;
 
 }

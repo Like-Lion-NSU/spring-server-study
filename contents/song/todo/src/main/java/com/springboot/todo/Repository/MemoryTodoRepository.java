@@ -1,7 +1,6 @@
 package com.springboot.todo.Repository;
 
-import com.springboot.todo.entity.Todo;
-import com.springboot.todo.entity.User;
+import com.springboot.todo.Entity.Todo;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
