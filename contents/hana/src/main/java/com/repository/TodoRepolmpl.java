@@ -16,9 +16,10 @@ public class TodoRepolmpl implements TodoRepo{
     }
 
     @Override
-    public Optional< Todo> findById(String userId) {
-        return Optional.ofNullable(store.get(userId));
+    public Optional< Todo> findById(Long id) {
+        return Optional.ofNullable(store.get(id));
     }
+
 
     @Override
     public List< Todo> findAll() {

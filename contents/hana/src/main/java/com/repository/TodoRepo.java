@@ -7,6 +7,8 @@ import java.util.Optional;
 
 public interface TodoRepo {
     Todo save (Todo todo);
-    Optional<Todo> findById(String userId);
+
+    Optional< Todo> findById(Long id);
+
     List<Todo> findAll();
 }

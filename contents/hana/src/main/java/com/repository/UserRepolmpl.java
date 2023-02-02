@@ -2,12 +2,9 @@ package com.repository;
 
 import com.entity.User;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
-public class UserRepolmpl implements UserRepo{
+public abstract class UserRepolmpl implements UserRepo{
 
     private static Map<Long, User> store = new HashMap<>();
     private static long sequence = 0L;
@@ -21,23 +18,26 @@ public class UserRepolmpl implements UserRepo{
     }
 
     @Override
-    public Optional<User> findById(String userId) {
-        return Optional.ofNullable(store.get(userId));
+    public Optional<User> findById(Long id) {
+        return Optional.ofNullable(store.get(id));
     }
 
+
     @Override
-    public Optional<User> findByName(String userName) {
-        return store.values().stream()
-                .filter(user -> user.getUserName().equals(userName))
-                .findAny();
+    public Optional<User> findByUserId(String userId) {
+        return store.values().stream().filter(user->user.getUserId().equals(userId)).findFirst();
     }
 
     @Override
     public List<User> findAll() {
-        return null;
+        return new ArrayList<>(store.values());
     }
 
     public void clearStore(){
         store.clear();
     }
+
 }
+
+
+

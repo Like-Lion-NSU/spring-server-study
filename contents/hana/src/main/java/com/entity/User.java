@@ -5,6 +5,9 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -16,7 +19,10 @@ public class User {
     @Column
     private String userId;
     @Column
-    private String userPassword;
+    private String passWord;
     @Column
-    private String userName;
+    private String name;
+
+    @OneToMany(mappedBy = "User")
+    private List<Todo> todoList = new ArrayList<>();
 }

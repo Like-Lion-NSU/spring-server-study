@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @Entity
@@ -12,14 +14,17 @@ public class Todo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private String userId;
-    @Column(length = 200)
-    private String title;
-    @Column
-    private Boolean Completed = false; //완료 여부
-    @Column
-    private String dueDate;  //마감일
+    //외래키
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
 
+    @Column
+    private String item;
+    @Column
+    private Boolean isDone; //완료 여부
 
+    private LocalDateTime createdDate; //생성날짜
+
+    private LocalDateTime updatedDate; //마감날짜
 }
