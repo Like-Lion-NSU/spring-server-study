@@ -1,7 +1,12 @@
-package com.springboot.todo.entity;
+package com.springboot.todo.Entity;
 
-public interface UserDetails {
-    Collection<? extends GrantedAuthority> getAuthorites();
+import org.springframework.security.core.GrantedAuthority;
+
+import java.io.Serializable;
+import java.util.Collection;
+
+public interface UserDetails extends Serializable {
+    Collection<? extends GrantedAuthority> getAuthorities();
 
     String getPassword();
 

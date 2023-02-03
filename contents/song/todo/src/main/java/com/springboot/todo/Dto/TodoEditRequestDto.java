@@ -5,12 +5,10 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class TodoSaveRequestDto {
-    private String item;
+public class TodoEditRequestDto {
     private Boolean isDone;
 
-    public TodoSaveRequestDto(String item, Boolean isDone){
-        this.item=item;
+    public TodoEditRequestDto(Boolean isDone){
         this.isDone=isDone;
     }
 }

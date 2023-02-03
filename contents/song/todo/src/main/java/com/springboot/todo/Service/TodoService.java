@@ -1,6 +1,6 @@
 package com.springboot.todo.Service;
 
-public class TodoService {
+public interface TodoService {
 
     //todo 생성
 
