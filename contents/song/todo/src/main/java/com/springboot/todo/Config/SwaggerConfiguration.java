@@ -27,7 +27,7 @@ public class SwaggerConfiguration {
                 .securityContexts(Arrays.asList(securityContext()))
                 .securitySchemes(Arrays.asList(apiKey()))
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.springboot.todo.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.springboot.todo.Controller"))
                 .paths(PathSelectors.any())
                 .build();
     }
@@ -35,7 +35,7 @@ public class SwaggerConfiguration {
     private ApiInfo apiInfo(){
         return new ApiInfoBuilder()
                 .title("Spring Boot Api Test with Swagger")
-                .description("설명 부분")
+                .description("Todo List")
                 .version("1.0.0")
                 .build();
     }

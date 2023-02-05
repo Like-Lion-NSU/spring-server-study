@@ -7,10 +7,10 @@ import com.springboot.todo.Dto.UserSignUpRequestDto;
 
 public interface UserService {
     //User 등록
-    public UserSignUpResponseDto signUp(UserSignUpRequestDto userSignUpRequestDto);
+    public Long signUp(UserSignUpRequestDto userSignUpRequestDto);
 
     //로그인
-    public UserSignInResponseDto signUp(UserSignInRequestDto userSignInRequestDto) throws RuntimeException;
+    public Long signUp(UserSignInRequestDto userSignInRequestDto) throws RuntimeException;
     //User 조회
 
     //User 수정

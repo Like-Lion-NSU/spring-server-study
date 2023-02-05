@@ -15,15 +15,14 @@ public class UserServiceImpl implements UserService {
 
     //User 등록
     @Override
-    public UserSignUpResponseDto signUp(UserSignUpRequestDto userSignUpRequestDto){
-        UserSignUpResponseDto userSignUpResponseDto = new UserSignUpResponseDto();
+    public Long signUp(UserSignUpRequestDto userSignUpRequestDto){
         User user = userSignUpRequestDto.toEntity();
         userRepository.save(user);
-        return userSignUpResponseDto;
+        return user.getId();
     }
 
     @Override
-    public UserSignInResponseDto signUp(UserSignInRequestDto userSignInRequestDto) throws RuntimeException {
+    public Long signUp(UserSignInRequestDto userSignInRequestDto) throws RuntimeException {
         return null;
     }
     //로그인

@@ -23,19 +23,15 @@ public class UserController {
     }
 
     //회원가입
-    @PostMapping("/sign-up")
-    public UserSignUpResponseDto signUp(@RequestBody UserSignUpRequestDto userSignUpRequestDto){
-        log.info("[signUp] 회원가입을 수행합니다. id : {}, password : ****, name : { }, role : { }",userSignUpRequestDto.getId(),userSignUpRequestDto.getPassword(),userSignUpRequestDto.getRole());
-        UserSignUpResponseDto userSignUpResponseDto = userService.signUp(userSignUpRequestDto);
-
-        if(userSignUpResponseDto.getCode()==0)
-            log.info("[signUp] 회원가입을 완료했습니다. id : {}", userSignUpRequestDto.getId());
-        return userSignUpResponseDto;
+    @PostMapping
+    public Long signUp(@RequestBody UserSignUpRequestDto userSignUpRequestDto){
+        Long signUp = userService.signUp(userSignUpRequestDto);
+        return signUp;
     }
 
     //로그인
 //    @PostMapping("sign-in")
-//    public UserSignInResponseDto signIn(@RequestBody UserSignInRequestDto userSignInReqeustDto){
+//    public Long signIn(@RequestBody UserSignInRequestDto userSignInReqeustDto){
 //
 //    }
 }
