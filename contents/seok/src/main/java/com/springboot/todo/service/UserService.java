@@ -4,6 +4,7 @@ import com.springboot.todo.entity.User;
 import com.springboot.todo.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -28,9 +29,9 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User getByCredentials(final String userId, final String password){
+    public User getByCredentials(final String userId, final String password, final PasswordEncoder encoder){
         final User user = userRepository.findByUserId(userId);
-        if(user != null){
+        if(user != null && encoder.matches(password, user.getPassword())){
             return userRepository.findByUserIdAndPassword(userId, password);
         }else{
             return null;

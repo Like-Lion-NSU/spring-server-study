@@ -7,6 +7,8 @@ import com.springboot.todo.security.TokenProvider;
 import com.springboot.todo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,13 +22,14 @@ public class UserController {
 
     @Autowired
     private TokenProvider tokenProvider;
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO){
         try{
             User user = User.builder()
                     .userId(userDTO.getUserId())
-                    .password(userDTO.getPassword())
+                    .password(passwordEncoder.encode(userDTO.getPassword()))
                     .userName(userDTO.getUserName())
                     .build();
             User registeredUser = userService.createUser(user);
@@ -44,7 +47,7 @@ public class UserController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticate(@RequestBody UserDTO userDTO){
-        User user = userService.getByCredentials(userDTO.getUserId(), userDTO.getPassword());
+        User user = userService.getByCredentials(userDTO.getUserId(), userDTO.getPassword(), passwordEncoder);
         if(user!=null){
             final String token = tokenProvider.createToken(user);
             UserDTO responseUserDTO = UserDTO.builder()
