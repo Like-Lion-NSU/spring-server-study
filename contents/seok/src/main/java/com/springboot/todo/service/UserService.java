@@ -32,7 +32,7 @@ public class UserService {
     public User getByCredentials(final String userId, final String password, final PasswordEncoder encoder){
         final User user = userRepository.findByUserId(userId);
         if(user != null && encoder.matches(password, user.getPassword())){
-            return userRepository.findByUserIdAndPassword(userId, password);
+            return userRepository.findByUserIdAndPassword(userId, user.getPassword());
         }else{
             return null;
         }
