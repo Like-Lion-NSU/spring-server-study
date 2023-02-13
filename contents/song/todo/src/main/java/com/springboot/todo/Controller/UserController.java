@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@Controller
 public class UserController {
     private final UserService userService;
 

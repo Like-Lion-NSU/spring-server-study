@@ -1,5 +1,7 @@
 package com.springboot.todo.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +10,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Data
 public class Todo{
 
@@ -27,6 +29,7 @@ public class Todo{
     private LocalDateTime updatedDate;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name="user_id")
     private User user;
 

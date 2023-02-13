@@ -1,8 +1,7 @@
 package com.springboot.todo.Entity;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +11,7 @@ import javax.persistence.*;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class User /*implements UserDetails*/ {
     //시스템 id
     @Id
@@ -31,6 +31,7 @@ public class User /*implements UserDetails*/ {
     private String name;
 
     //todoList
+    @JsonManagedReference
     @OneToMany(mappedBy = "user")
     private List<Todo> todoList = new ArrayList<>();
 

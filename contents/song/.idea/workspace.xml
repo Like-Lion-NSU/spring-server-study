@@ -5,26 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fef2ab58-c10d-4d9b-9994-3eec232ae732" name="Changes" comment="[Feat] User DTO, Controller, Service 구현 -#3">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jpa-buddy.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/todo.main.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/song.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/todo/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/todo/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/todo/src/main/java/com/springboot/todo/Controller/TodoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/todo/src/main/java/com/springboot/todo/Controller/TodoController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/todo/src/main/java/com/springboot/todo/Controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/todo/src/main/java/com/springboot/todo/Controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/todo/src/main/java/com/springboot/todo/Dto/TodoSaveRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/todo/src/main/java/com/springboot/todo/Dto/TodoSaveRequestDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/todo/src/main/java/com/springboot/todo/Entity/Todo.java" beforeDir="false" afterPath="$PROJECT_DIR$/todo/src/main/java/com/springboot/todo/Entity/Todo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/todo/src/main/java/com/springboot/todo/Service/TodoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/todo/src/main/java/com/springboot/todo/Service/TodoService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/todo/src/main/java/com/springboot/todo/Service/TodoServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/todo/src/main/java/com/springboot/todo/Service/TodoServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,15 +87,16 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/user/Desktop/song/likelion/spring-server-study-master/contents/song",
+    "jdk.selected.JAVA_MODULE": "17",
+    "last_opened_file_path": "C:/Users/user/Desktop/song/likelion/spring-server-study-master/contents/song/todo",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "프로젝트",
+    "project.structure.last.edited": "모듈",
     "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "preferences.pluginManager",
     "spring.configuration.checksum": "70ab5eafc742d43bfbee6c92145ba50e",
     "vue.rearranger.settings.migration": "true"
@@ -164,6 +149,8 @@
       <workItem from="1675854958345" duration="3571000" />
       <workItem from="1675859672319" duration="968000" />
       <workItem from="1675947166719" duration="58000" />
+      <workItem from="1676297331790" duration="254000" />
+      <workItem from="1676297615268" duration="144000" />
     </task>
     <task id="LOCAL-00001" summary="[Feat] Todo domain 작성 - #1">
       <created>1674581231256</created>
