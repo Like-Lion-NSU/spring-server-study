@@ -9,6 +9,7 @@ import com.springboot.todo.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -25,10 +26,10 @@ public class TodoController {
     private UserService userService;
 
     @GetMapping
-    public ResponseEntity<?> retrieveTodoList(){
+    public ResponseEntity<?> retrieveTodoList(@AuthenticationPrincipal String userId){
         try{
-            User testUser = userService.getUser("string");
-            List<Todo> todos = todoService.retrieve(testUser);
+            User user = userService.getUser(userId);
+            List<Todo> todos = todoService.retrieve(user);
             List<TodoDTO> dtos = todos.stream().map(TodoDTO::new).collect(Collectors.toList());
             ResponseDTO response = ResponseDTO.<TodoDTO>builder().data(dtos).build();
             return ResponseEntity.ok().body(response);
@@ -42,12 +43,12 @@ public class TodoController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createTodoList(@RequestBody TodoDTO dto){
+    public ResponseEntity<?> createTodoList(@AuthenticationPrincipal String userId, @RequestBody TodoDTO dto){
         try{
-            User testUser = userService.getUser(dto.getUserId());
+            User user = userService.getUser(userId);
             Todo todo = TodoDTO.toEntity(dto);
             todo.setId(null);
-            todo.setUser(testUser);
+            todo.setUser(user);
             todo.setCreatedDate(LocalDateTime.now());
 
             List<Todo> todos = todoService.todoCreate(todo);
@@ -61,11 +62,11 @@ public class TodoController {
     }
 
     @PutMapping
-    public ResponseEntity<?> updateTodoList(@RequestBody TodoDTO dto){
+    public ResponseEntity<?> updateTodoList(@AuthenticationPrincipal String userId, @RequestBody TodoDTO dto){
         try{
-            User testUser = userService.getUser(dto.getUserId());
+            User user = userService.getUser(userId);
             Todo todo = TodoDTO.toEntity(dto);
-            todo.setUser(testUser);
+            todo.setUser(user);
 
             List<Todo> todos = todoService.todoUpdate(todo);
             List<TodoDTO> dtos = todos.stream().map(TodoDTO::new).collect(Collectors.toList());
@@ -81,11 +82,11 @@ public class TodoController {
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteTodoList(@RequestBody TodoDTO dto){
+    public ResponseEntity<?> deleteTodoList(@AuthenticationPrincipal String userId, @RequestBody TodoDTO dto){
         try{
-            User testUser = userService.getUser(dto.getUserId());
+            User user = userService.getUser(userId);
             Todo todo = TodoDTO.toEntity(dto);
-            todo.setUser(testUser);
+            todo.setUser(user);
 
             List<Todo> todos = todoService.todoDelete(todo);
             List<TodoDTO> dtos = todos.stream().map(TodoDTO::new).collect(Collectors.toList());
