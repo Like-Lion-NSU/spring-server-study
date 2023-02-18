@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -17,12 +19,17 @@ public class Todo {
     private Long id;
 
     @Column(nullable = false)
-    private String userId;
+    private String item;
 
     @Column(nullable = false)
-    private String title;
+    private boolean isDone;
 
-    @Column(nullable = false)
-    private boolean done;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    private LocalDateTime createdDate;
+
+    private LocalDateTime updatedDate;
 
 }
