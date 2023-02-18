@@ -28,7 +28,7 @@ public class TodoController {
     @GetMapping
     public ResponseEntity<?> retrieveTodoList(@AuthenticationPrincipal String userId){
         try{
-            User user = userService.getUser(userId);
+            User user = userService.retrieveByUserId(userId);
             List<Todo> todos = todoService.retrieve(user);
             List<TodoDTO> dtos = todos.stream().map(TodoDTO::new).collect(Collectors.toList());
             ResponseDTO response = ResponseDTO.<TodoDTO>builder().data(dtos).build();
@@ -45,7 +45,7 @@ public class TodoController {
     @PostMapping
     public ResponseEntity<?> createTodoList(@AuthenticationPrincipal String userId, @RequestBody TodoDTO dto){
         try{
-            User user = userService.getUser(userId);
+            User user = userService.retrieveByUserId(userId);
             Todo todo = TodoDTO.toEntity(dto);
             todo.setId(null);
             todo.setUser(user);
@@ -64,7 +64,7 @@ public class TodoController {
     @PutMapping
     public ResponseEntity<?> updateTodoList(@AuthenticationPrincipal String userId, @RequestBody TodoDTO dto){
         try{
-            User user = userService.getUser(userId);
+            User user = userService.retrieveByUserId(userId);
             Todo todo = TodoDTO.toEntity(dto);
             todo.setUser(user);
 
@@ -84,7 +84,7 @@ public class TodoController {
     @DeleteMapping
     public ResponseEntity<?> deleteTodoList(@AuthenticationPrincipal String userId, @RequestBody TodoDTO dto){
         try{
-            User user = userService.getUser(userId);
+            User user = userService.retrieveByUserId(userId);
             Todo todo = TodoDTO.toEntity(dto);
             todo.setUser(user);
 
