@@ -1,14 +1,12 @@
 package com.springboot.todo.controller;
 
-import com.springboot.todo.dto.ResponseDTO;
-import com.springboot.todo.dto.TodoDTO;
+import com.springboot.todo.dto.TodoRequestDTO;
+import com.springboot.todo.dto.TodoResponseDTO;
 import com.springboot.todo.entity.Todo;
 import com.springboot.todo.entity.User;
 import com.springboot.todo.service.TodoService;
 import com.springboot.todo.service.UserService;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,83 +16,51 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/todo")
-@Tag(name = "Todo", description = "Todo API Document")
 public class TodoController {
-    @Autowired
     private TodoService todoService;
-    @Autowired
     private UserService userService;
 
+    @Autowired
+    public TodoController(TodoService todoService, UserService userService){
+        this.todoService = todoService;
+        this.userService = userService;
+    }
+
     @GetMapping
-    public ResponseEntity<?> retrieveTodoList(@AuthenticationPrincipal String userId){
-        try{
-            User user = userService.retrieveByUserId(userId);
-            List<Todo> todos = todoService.retrieve(user);
-            List<TodoDTO> dtos = todos.stream().map(TodoDTO::new).collect(Collectors.toList());
-            ResponseDTO response = ResponseDTO.<TodoDTO>builder().data(dtos).build();
-            return ResponseEntity.ok().body(response);
-        }catch (IllegalStateException e){
-            ResponseDTO response = ResponseDTO.builder().error("Todo Table is empty").build();
-            return ResponseEntity.badRequest().body(response);
-        }catch (Exception e){
-            ResponseDTO response = ResponseDTO.builder().error(e.getMessage()).build();
-            return ResponseEntity.badRequest().body(response);
-        }
+    public List<TodoResponseDTO> retrieveTodoList(@AuthenticationPrincipal String userId){
+        User user = userService.retrieveByUserId(userId);
+        List<Todo> todos = todoService.retrieveTodoList(user.getId());
+        List<TodoResponseDTO> dtos = todos.stream().map(TodoResponseDTO::new).collect(Collectors.toList());
+        return dtos;
     }
 
     @PostMapping
-    public ResponseEntity<?> createTodoList(@AuthenticationPrincipal String userId, @RequestBody TodoDTO dto){
-        try{
-            User user = userService.retrieveByUserId(userId);
-            Todo todo = TodoDTO.toEntity(dto);
-            todo.setId(null);
-            todo.setUser(user);
-            todo.setCreatedDate(LocalDateTime.now());
-
-            List<Todo> todos = todoService.todoCreate(todo);
-            List<TodoDTO> dtos = todos.stream().map(TodoDTO::new).collect(Collectors.toList());
-            ResponseDTO response = ResponseDTO.<TodoDTO>builder().data(dtos).build();
-            return ResponseEntity.ok().body(response);
-        }catch (Exception e){
-            ResponseDTO response = ResponseDTO.builder().error("An unexpected error occurred").build();
-            return ResponseEntity.badRequest().body(response);
-        }
+    public Long saveTodo(@AuthenticationPrincipal String userId, @RequestBody TodoRequestDTO dto){
+        Todo todo = TodoResponseDTO.toEntity(dto);
+        todo.setId(null);
+        todo.setUser(userService.retrieveByUserId(userId));
+        todo.setCreatedDate(LocalDateTime.now());
+        return todoService.saveTodo(todo);
     }
 
-    @PutMapping
-    public ResponseEntity<?> updateTodoList(@AuthenticationPrincipal String userId, @RequestBody TodoDTO dto){
-        try{
-            User user = userService.retrieveByUserId(userId);
-            Todo todo = TodoDTO.toEntity(dto);
-            todo.setUser(user);
-
-            List<Todo> todos = todoService.todoUpdate(todo);
-            List<TodoDTO> dtos = todos.stream().map(TodoDTO::new).collect(Collectors.toList());
-            ResponseDTO response = ResponseDTO.<TodoDTO>builder().data(dtos).build();
-            return ResponseEntity.ok().body(response);
-        }catch (IllegalStateException e){
-            ResponseDTO response = ResponseDTO.builder().error("Entity is not existed").build();
-            return ResponseEntity.badRequest().body(response);
-        }catch (Exception e){
-            ResponseDTO response = ResponseDTO.builder().error("An unexpected error occurred").build();
-            return ResponseEntity.badRequest().body(response);
-        }
+    @GetMapping("/{id}")
+    public TodoResponseDTO retrieveTodo(@AuthenticationPrincipal String userId, @PathVariable Long id){
+        Todo todo =  todoService.retrieveTodo(id).get();
+        TodoResponseDTO dto = new TodoResponseDTO(todo);
+        return dto;
     }
 
-    @DeleteMapping
-    public ResponseEntity<?> deleteTodoList(@AuthenticationPrincipal String userId, @RequestBody TodoDTO dto){
-        try{
-            User user = userService.retrieveByUserId(userId);
-            Todo todo = TodoDTO.toEntity(dto);
-            todo.setUser(user);
+    @PutMapping("/{id}")
+    public void updateTodo(@AuthenticationPrincipal String userId, @PathVariable Long id, @RequestBody TodoRequestDTO dto){
+        Todo todo = todoService.retrieveTodo(id).get();
+        todo.setItem(dto.getItem());
+        todo.setDone(dto.isDone());
+        todo.setUpdatedDate(LocalDateTime.now());
+        todoService.updateTodo(todo);
+    }
 
-            List<Todo> todos = todoService.todoDelete(todo);
-            List<TodoDTO> dtos = todos.stream().map(TodoDTO::new).collect(Collectors.toList());
-            ResponseDTO response = ResponseDTO.<TodoDTO>builder().data(dtos).build();
-            return ResponseEntity.ok().body(response);
-        }catch (Exception e) {
-            ResponseDTO response = ResponseDTO.builder().error("An error occurred while deleting a Todo").build();
-            return ResponseEntity.badRequest().body(response);
-        }
+    @DeleteMapping("/{id}")
+    public void deleteTodo(@AuthenticationPrincipal String userId, @PathVariable Long id){
+        todoService.deleteTodo(id);
     }
 }
