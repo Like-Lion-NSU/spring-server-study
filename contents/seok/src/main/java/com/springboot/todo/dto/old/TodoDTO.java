@@ -1,4 +1,4 @@
-package com.springboot.todo.dto;
+package com.springboot.todo.dto.old;
 
 import com.springboot.todo.entity.Todo;
 import lombok.AllArgsConstructor;
