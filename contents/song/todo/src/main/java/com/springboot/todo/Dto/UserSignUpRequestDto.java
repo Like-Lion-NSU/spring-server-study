@@ -5,6 +5,7 @@ import lombok.*;
 
 @Getter
 @Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserSignUpRequestDto {
     private String id;
@@ -13,21 +14,21 @@ public class UserSignUpRequestDto {
 
     private String role;
 
-    public UserSignUpRequestDto(String id, String password, String name, String role){
-        this.id=id;
-        this.password=password;
-        this.name=name;
-        this.role=role;
-
-    }
-
-    public User toEntity(){
-        return User.builder()
-                .userId(id)
-                .name(name)
-                .password(password)
-                .role(role)
-                .build();
-    }
+//    public UserSignUpRequestDto(String id, String password, String name, String role){
+//        this.id=id;
+//        this.password=password;
+//        this.name=name;
+//        this.role=role;
+//
+//    }
+//
+//    public User toEntity(){
+//        return User.builder()
+//                .userId(id)
+//                .name(name)
+//                .password(password)
+//                .roles(role)
+//                .build();
+//    }
 
 }

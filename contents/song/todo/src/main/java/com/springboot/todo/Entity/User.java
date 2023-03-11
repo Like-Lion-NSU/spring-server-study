@@ -1,18 +1,25 @@
 package com.springboot.todo.Entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.springboot.todo.Dto.UserDetails;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.*;
 
 @Entity
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User /*implements UserDetails*/ {
+public class User implements UserDetails {
     //시스템 id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,6 +44,7 @@ public class User /*implements UserDetails*/ {
 
     //역할
     @ElementCollection(fetch = FetchType.EAGER)
+    @Builder.Default
     private List<String> roles = new ArrayList<>();
 
     /*@Builder가 만들어주는 7가지
@@ -54,13 +62,56 @@ public class User /*implements UserDetails*/ {
 6. toString()
 
 7. builder() 메서드 - builder의 새 인스턴스를 만들어서 반환*/
-    @Builder
-    public User(String userId, String name, String password, List<Todo> todoList, String role){
-        this.userId=userId;
-        this.name=name;
-        this.password=password;
-        this.todoList=todoList;
-        this.roles.add(role);
-//        this.role=role;
+//    @Builder
+//    public User(String userId, String name, String password, List<Todo> todoList, String role){
+//        this.userId=userId;
+//        this.name=name;
+//        this.password=password;
+//        this.todoList=todoList;
+//        this.roles.add(role);
+////        this.role=role;
+//    }
+
+//    @ElementCollection(fetch=FetchType.EAGER)
+//    @Builder.Default
+//    private List<String> role = new ArrayList<>();
+
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities(){
+        return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
+
+    @JsonProperty(access=JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public String getUsername(){
+        return this.userId;
+    }
+
+    @JsonProperty(access=JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public boolean isAccountNonExpired(){
+        return true;
+    }
+
+    @JsonProperty(access=JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public boolean isAccountNonLocked(){
+        return true;
+    }
+    @JsonProperty(access=JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public boolean isCredentialsNonExpired(){
+        return true;
+    }
+
+    @JsonProperty(access=JsonProperty.Access.WRITE_ONLY)
+    @Override
+    public boolean isEnabled(){
+        return true;
+    }
+
+
+
 }
