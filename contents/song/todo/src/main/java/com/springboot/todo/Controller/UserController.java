@@ -38,6 +38,7 @@ public class UserController {
     }
 
     //로그인
+    @PostMapping("/sign-in")
     public SignInResultDto signIn(@RequestBody UserSignInRequestDto userSignInRequestDto) throws RuntimeException{
         log.info("[signIn] 로그인을 시도하고 있습니다. id : {}, pw : ****", userSignInRequestDto.getId());
         SignInResultDto signInResultDto = userService.signIn(userSignInRequestDto);
