@@ -28,7 +28,7 @@ public class TodoController {
         return saveTodo;
     }
 
-    @GetMapping("/todos{id}")
+    @GetMapping("/todos/{id}")
     public List<Todo> findTodos(@PathVariable Long id){ //리스트 형식으로 리턴
         List<Todo> todos = todoService.findTodos(id); //리스트 형식인 자료형 변수에 userService의 findUsers 메소드 리턴 값을 users에 저장
         return todos;
@@ -49,5 +49,4 @@ public class TodoController {
     public void deleteTodo(@PathVariable Long id){
         todoService.deleteTodo(id);
     }
-
 }
