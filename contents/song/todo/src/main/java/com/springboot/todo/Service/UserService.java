@@ -11,7 +11,7 @@ public interface UserService {
     public SignUpResultDto signUp(UserSignUpRequestDto userSignUpRequestDto);
 
     //로그인
-    public SignInResultDto signIn(UserSignInRequestDto userSignInRequestDto);
+    public SignInResultDto signIn(UserSignInRequestDto userSignInRequestDto) throws RuntimeException;
 
     //User 전체 조회
     public List<User> findUsers();

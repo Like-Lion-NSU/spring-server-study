@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+//토큰의 인증정보를 조회할때 사용
 @Service
 @Slf4j
 public class UserDetailsServiceImpl implements UserDetailsService {

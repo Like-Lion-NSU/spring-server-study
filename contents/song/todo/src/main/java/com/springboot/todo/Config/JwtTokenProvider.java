@@ -24,6 +24,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 
+//토큰 생성, 검증 등의 함수들을 구현해놓은 클래스, JWT에서 핵심이 되는 클래스
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -36,9 +37,9 @@ public class JwtTokenProvider {
     @Value("${spring.jwt.secret}")
     private String secretKey = "secretKey";
     private SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    private final Long tokenValidMillisecond = 1000L*60*60;
+    private final Long tokenValidMillisecond = 1000L*60*60; // 토큰 유효시간 60분
 
-
+    // 객체 초기화, secretKey를 Base64로 인코딩
     @PostConstruct
     protected void init()
     {
@@ -49,13 +50,13 @@ public class JwtTokenProvider {
         logger.info("[init] JwtTokenProvider 내 secretKey 초기화 완료");
     }
 
-
+    // 토큰 생성
     public String createToken(String userUid, List<String> roles)
     {
         logger.info("[createToken] 토큰 생성 시작");
-        Claims claims = Jwts.claims().setSubject(userUid);
-        claims.put("roles",roles);
-        Date now = new Date(); //여기서 import 타입 Date이 달라서때문은 아니겟징
+        Claims claims = Jwts.claims().setSubject(userUid); // JWT payload 에 저장되는 정보단위
+        claims.put("roles",roles); // 정보는 key / value 쌍으로 저장
+        Date now = new Date();
         String token = Jwts.builder()
                 .setClaims(claims) //데이터
                 .setIssuedAt(now) // 토큰 발행 일자
@@ -66,6 +67,7 @@ public class JwtTokenProvider {
         return token;
     }
 
+    // 인증 정보 조회
     public Authentication getAuthentication(String token)
     {
         logger.info("[getAuthentication] 토큰 인증 정보 조회 시작");
@@ -77,6 +79,7 @@ public class JwtTokenProvider {
 
     }
 
+    // 토큰에서 회원 정보 추출
     public String getUsername(String token)
     {
         logger.info("[getUsername] 토큰 기반 회원 구별 정보 추출");
@@ -87,6 +90,7 @@ public class JwtTokenProvider {
         return info;
     }
 
+    // Request의 Header에서 token 값 가져오기
     public String resolveToken(HttpServletRequest request)
     {
         logger.info("[resolveToken] HTTP 헤더에서 Token 값 추출");
@@ -96,6 +100,7 @@ public class JwtTokenProvider {
 
     }
 
+    // 토큰 유효성, 만료일자 확인
     public boolean validateToken(String token)
     {
         logger.info("[validateToken] 토큰 유효 체크 시작");

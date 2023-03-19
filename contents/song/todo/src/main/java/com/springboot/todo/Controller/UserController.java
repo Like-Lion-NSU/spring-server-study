@@ -44,7 +44,6 @@ public class UserController {
         SignInResultDto signInResultDto = userService.signIn(userSignInRequestDto);
 
         if (signInResultDto.getCode() == 0) {
-//            SignInResultDto signInResultDto = (SignInResultDto) userService.signIn(userSignInRequestDto);
             log.info("[signIn] 정상적으로 로그인되었습니다. id : {}, token : {}", userSignInRequestDto.getId(), signInResultDto.getToken());
             return signInResultDto;
         }

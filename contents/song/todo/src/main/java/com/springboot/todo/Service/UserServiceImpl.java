@@ -27,8 +27,11 @@ public class UserServiceImpl implements UserService {
     Bean을 찾아주는 역할을 함
      */
     @Autowired
-    public UserServiceImpl(UserRepository userRepository){
+    public UserServiceImpl(UserRepository userRepository, JwtTokenProvider jwtTokenProvider,
+                           PasswordEncoder passwordEncoder){
         this.userRepository=userRepository;
+        this.jwtTokenProvider=jwtTokenProvider;
+        this.passwordEncoder=passwordEncoder;
     }
 
     //User 등록
@@ -36,14 +39,17 @@ public class UserServiceImpl implements UserService {
     public SignUpResultDto signUp(UserSignUpRequestDto userSignUpRequestDto){
         SignUpResultDto signUpResultDto = new SignUpResultDto();
         validateDuplicateUser(userSignUpRequestDto); //회원 중복 확인
+        log.info("[getSignUpResult] 회원 가입 정보 전달");
         User user;
         if(userSignUpRequestDto.getRole().equals("admin")) {
+
             user = User.builder()
                     .userId(userSignUpRequestDto.getId())
                     .name(userSignUpRequestDto.getName())
                     .password(passwordEncoder.encode(userSignUpRequestDto.getPassword()))
                     .roles(Collections.singletonList("ROLE_ADMIN"))
                     .build();
+            log.info("[getSignUpResult] admin");
         }else{
             user = User.builder()
                     .userId(userSignUpRequestDto.getId())
@@ -51,6 +57,7 @@ public class UserServiceImpl implements UserService {
                     .password(passwordEncoder.encode(userSignUpRequestDto.getPassword()))
                     .roles(Collections.singletonList("ROLE_USER"))
                     .build();
+            log.info("[getSignUpResult] role_user");
         }
         User savedUser = userRepository.save(user);
         log.info("[getSignUpResult] userEntity 값이 들어왔는지 확인 후 결과 값 주입");
@@ -75,7 +82,7 @@ public class UserServiceImpl implements UserService {
 
     //로그인
     @Override
-    public SignInResultDto signIn(UserSignInRequestDto userSignInRequestDto){
+    public SignInResultDto signIn(UserSignInRequestDto userSignInRequestDto) throws RuntimeException{
         log.info("[getSignInResult] signDataHandler로 회원 정보 요청");
         User user = userRepository.findByUserId(userSignInRequestDto.getId()).get();
         log.info("[getSignInResult] Id : {}",userSignInRequestDto.getId());
