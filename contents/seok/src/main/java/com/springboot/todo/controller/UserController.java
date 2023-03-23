@@ -64,8 +64,11 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public void updateUser(@AuthenticationPrincipal String userId, @PathVariable Long id, @RequestBody UserRequestDTO dto){
-        User user = UserResponseDTO.toEntity(dto);
+    public void updateUser(@AuthenticationPrincipal Long userId, @PathVariable Long id, @RequestBody UserRequestDTO dto){
+        User user = userService.retrieveById(userId);
+        user.setUserName(dto.getUserName());
+        user.setUserId(dto.getUserId());
+        user.setPassword(dto.getPassword());
         userService.update(user);
     }
 
