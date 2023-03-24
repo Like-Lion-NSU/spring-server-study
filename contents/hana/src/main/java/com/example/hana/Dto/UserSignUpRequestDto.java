@@ -1,25 +1,22 @@
 package com.example.hana.Dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import com.example.hana.Entity.User;
 
 @Getter
+@Builder
 @NoArgsConstructor
 public class UserSignUpRequestDto {
     private String id;
     private String password;
     private String name;
-    public UserSignUpRequestDto(String id, String name, String password){
-        this.id=id;this.name=name;
-        this.password=password;
-    }
+    private String role;
 
-    public User toEntity(){
-        return User.builder()
-                .userId(id)
-                .name(name)
-                .password(password)
-                .build();
+    public UserSignUpRequestDto(String id, String password, String name, String role){
+        this.id=id;
+        this.password=password;
+        this.name=name;
+        this.role=role;
+
     }
 }

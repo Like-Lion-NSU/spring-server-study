@@ -22,7 +22,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="hana.main" options="--add-exports java.base/sun.security.ssl=ALL-UNNAMED" />
+      <module name="hana.main" options="--add-exports java.base/sun.security.ssl=ALL-UNNAMED --add-exports jdk.jdeps/com.sun.tools.classfile=ALL-UNNAMED" />
     </option>
   </component>
 </project>
