@@ -1,17 +1,19 @@
 package com.example.young.Controller;
 
-import com.example.young.Service.TodoService;
-import com.example.young.dto.TodoDto;
+
+import com.example.young.dto.TodoSaveRequestDto;
+import com.example.young.dto.TodoEditRequestDto;
 import com.example.young.entity.Todo;
+import com.example.young.entity.User;
+import com.example.young.Service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
+
 @RestController
-@Controller
-@RequestMapping("/todo")
 public class TodoController {
     private TodoService todoService;
 
@@ -20,25 +22,33 @@ public class TodoController {
         this.todoService = todoService;
     }
 
-    @PostMapping("/{userId}")
-    public Long save_todo(@PathVariable String userId, @RequestBody TodoDto todoDto){
-        Long save_todo=todoService.save_todo(userId, todoDto);
-        return save_todo;
+    @PostMapping("/todo/{id}")
+    public Long saveTodo(@PathVariable String id, @RequestBody TodoSaveRequestDto todoSaveRequestDto){
+        Long saveTodo = todoService.saveTodo(id,todoSaveRequestDto);
+        return saveTodo;
     }
 
-    @PutMapping("/{id}")
-    public void update_todo(@PathVariable Long id, @RequestBody TodoDto todoDto){
-        todoService.update_todo(id, todoDto);
+    @GetMapping("/todos/{id}")
+    public List<Todo> findTodos(@PathVariable Long id){
+        List<Todo> todos = todoService.findTodos(id);
+        return todos;
     }
 
-    @DeleteMapping("/{id}")
-    public void delete_todo(@PathVariable Long id){
-        todoService.delete_todo(id);
-    }
-
-    @GetMapping("/{id}")
+    @GetMapping("/todo/{id}")
     public Optional<Todo> todo(@PathVariable Long id){
         Optional<Todo> todo = todoService.findById(id);
         return todo;
     }
+
+    @PatchMapping("/todo/{id}")
+    public void editTodo(@PathVariable Long id, @RequestBody TodoEditRequestDto todoEditRequestDto){
+        todoService.editTodo(id, todoEditRequestDto);
+    }
+
+    @DeleteMapping("/todo/{id}")
+    public void deleteTodo(@PathVariable Long id){
+        todoService.deleteTodo(id);
+    }
+
+
 }

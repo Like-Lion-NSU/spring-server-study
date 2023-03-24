@@ -1,26 +1,27 @@
 package com.example.young.entity;
 
-import com.example.young.entity.User;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Builder;
+
 import java.time.LocalDateTime;
+import jakarta.persistence.*;
 
 
 @Entity
 @Data
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Todo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable=false)
     private String item;
 
-    @Column
+    @Column(nullable=false)
     private Boolean isDone;
 
     private LocalDateTime createdDate;
@@ -28,15 +29,15 @@ public class Todo {
     private LocalDateTime updatedDate;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "user_id")
     private User user;
 
     @Builder
-    public Todo(Long id, String item, Boolean isDone, LocalDateTime createdDate, LocalDateTime updatedDate){
+    public Todo(Long id, String item, Boolean isDone, User user){
         this.id=id;
         this.item=item;
         this.isDone=isDone;
-        this.createdDate=createdDate;
-        this.updatedDate=updatedDate;
+        this.user=user;
     }
 }
