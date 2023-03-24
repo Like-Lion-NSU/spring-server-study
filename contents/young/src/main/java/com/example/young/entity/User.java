@@ -35,7 +35,7 @@ public class User implements UserDetails{
     private String name;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Todo> todoList = new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.EAGER)

@@ -31,7 +31,7 @@ public class JwtTokenProvider {
     private SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     @Value("${spring.jwt.secret}")
-    private String secretKey = "Bearer" + "secretKey";
+    private String secretKey = "secretKey";
     private final long tokenValidMillisecond = 1000L * 60 * 60 * 24;
     @PostConstruct
     protected void init(){
@@ -67,7 +67,7 @@ public class JwtTokenProvider {
 
     public String getUsername(String token){
         LOGGER.info("[getUsername] 토큰 기반 회원 구별 정보 추출");
-        String info = Jwts.parserBuilder().setSigningKey(key).build()
+        String info = Jwts.parserBuilder().setSigningKey(secretKey).build()
                 .parseClaimsJws(token).getBody().getSubject();
 
         LOGGER.info("[getUsername] 토큰 기반 회원 구별 정보 추출 완료, info : {}",info);
@@ -83,7 +83,7 @@ public class JwtTokenProvider {
     public boolean validateToken(String token){
         LOGGER.info("[validateToken] 토큰 유효 체크 시작");
         try{
-            Jws<Claims> claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token);
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
 
             return !claims.getBody().getExpiration().before(new Date());
         }catch(Exception e){
