@@ -29,7 +29,7 @@ public class Todo{
     private LocalDateTime updatedDate;
 
     @ManyToOne
-    @JsonBackReference
+    //@JsonBackReference
     @JoinColumn(name="user_id")
     private User user;
 

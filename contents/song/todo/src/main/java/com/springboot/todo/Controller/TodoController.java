@@ -7,6 +7,8 @@ import com.springboot.todo.Entity.User;
 import com.springboot.todo.Service.TodoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,9 +24,11 @@ public class TodoController {
         this.todoService=todoService;
     }
 
-    @PostMapping("/todo/{id}")
-    public Long saveTodo(@PathVariable String id, @RequestBody TodoSaveRequestDto todoSaveRequestDto){
-        Long saveTodo = todoService.saveTodo(id,todoSaveRequestDto);
+    @PostMapping("/todo")
+    public Long saveTodo(@RequestBody TodoSaveRequestDto todoSaveRequestDto){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = (User)principal;
+        Long saveTodo = todoService.saveTodo(user.getUserId(),todoSaveRequestDto);
         return saveTodo;
     }
 

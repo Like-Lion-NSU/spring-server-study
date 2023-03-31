@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
+//Spring Security에서 인증되었으나 권한이 없는 사용자의 리소스에 대한 접근 처리
 @Component
-public class CustomAccessDeniedHandler implements AccessDeniedHandler {
+public class CustomAccessDeniedHandler implements AccessDeniedHandler { //액세스 권한이 없는 리소스에 접근할 경우 발생하는 예외(리다이렉트 방식)
     private final Logger LOGGER = LoggerFactory.getLogger(CustomAccessDeniedHandler.class);
 
     @Override

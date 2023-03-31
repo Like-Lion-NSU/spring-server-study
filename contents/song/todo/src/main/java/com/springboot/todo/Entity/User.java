@@ -15,7 +15,8 @@ import java.util.stream.Collectors;
 import javax.persistence.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -38,8 +39,8 @@ public class User implements UserDetails {
     private String name;
 
     //todoList
-    @JsonManagedReference
-    @OneToMany(mappedBy = "user")
+    //@JsonManagedReference
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Todo> todoList = new ArrayList<>();
 
     //역할

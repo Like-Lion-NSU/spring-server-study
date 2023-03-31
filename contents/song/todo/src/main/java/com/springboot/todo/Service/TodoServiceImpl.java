@@ -8,6 +8,7 @@ import com.springboot.todo.Repository.TodoRepository;
 import com.springboot.todo.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +26,7 @@ public class TodoServiceImpl implements TodoService{
     }
 
     @Override
+    @Transactional
     public Long saveTodo(String id, TodoSaveRequestDto todoSaveRequestDto) { //todo pk값 리턴
         User user = userRepository.findByUserId(id).get(); //유저 아이디로 유저 dao에서 찾음
         Todo todo = todoSaveRequestDto.toEntity(); //dto에 있는 toEntity로 값 초기화 시켜줌
