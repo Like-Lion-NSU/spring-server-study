@@ -1,7 +1,6 @@
 package com.example.hana.Entity;
 
 import com.example.hana.Dto.UserDetails;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -11,7 +10,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,12 +23,13 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class User implements UserDetails {
 
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  //기본키 생성을 db에 위임
+    private Long id; //식별자 id
 
     @Column(nullable = false, unique = true)
-    private String userId;
+    private String userId;//사용자 id
 
     @Column(nullable = false)
     private String password;
@@ -39,7 +38,7 @@ public class User implements UserDetails {
     private String name;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Todo> todoList = new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -48,41 +47,41 @@ public class User implements UserDetails {
 
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities(){
+    public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
-    @JsonProperty(access=JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
-    public String getUsername(){
+    public String getUsername() {
         return this.userId;
     }
 
-    @JsonProperty(access=JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
-    public boolean isAccountNonExpired(){
+    public boolean isAccountNonExpired() {
         return true;
     }
 
-    @JsonProperty(access=JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
-    public boolean isAccountNonLocked(){
+    public boolean isAccountNonLocked() {
         return true;
     }
 
-    @JsonProperty(access=JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
-    public boolean isCredentialsNonExpired(){
+    public boolean isCredentialsNonExpired() {
         return true;
     }
 
-    @JsonProperty(access=JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
-    public boolean isEnabled(){
+    public boolean isEnabled() {
         return true;
     }
 
-
+}
 
 //    @Builder
 //    public User(String userId, String name, String password, List<Todo> todoList, String role){
@@ -94,4 +93,3 @@ public class User implements UserDetails {
 //    }
 
 
-}

@@ -24,7 +24,7 @@ import static org.hibernate.sql.ast.SqlTreeCreationLogger.LOGGER;
 public class SignServiceImpl implements SignService {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private final UserRepository userRepository;
+    public UserRepository userRepository;
     public JwtTokenProvider jwtTokenProvider;
     public PasswordEncoder passwordEncoder;
 
@@ -35,19 +35,20 @@ public class SignServiceImpl implements SignService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    //회원가입
     @Override
     public SignUpResultDto signUp(UserSignUpRequestDto userSignUpRequestDto) {
         SignUpResultDto signUpResultDto = new SignUpResultDto();
 
         LOGGER.info("[getSignUpResult]회원 가입 정보 전달");
         User user;
-
+      //role 객체가 admin일 땐 user entity의 roles 변수에 ROLE_ADMIN 저장
         if (userSignUpRequestDto.getRole().equals("admin")) {
             user = User.builder()
                     .userId(userSignUpRequestDto.getId())
                     .name(userSignUpRequestDto.getName())
                     .password(passwordEncoder.encode(userSignUpRequestDto.getPassword()))
-                    .roles(Collections.singletonList("ROLE_ADMIN"))
+                    .roles(Collections.singletonList("ROLE_ADMIN")) //user entity의 roles는 list여서 Collections.singletonList() 사용
                     .build();
         } else {
             user = User.builder()
@@ -58,7 +59,6 @@ public class SignServiceImpl implements SignService {
                     .build();
         }
         User savedUser = userRepository.save(user);
-        // SignInResultDto signUpResultDto = new SignInResultDto();
 
         LOGGER.info("[getSignUpResult] userEntity 값이 들어왔는지 확인 후 결과값 주입");
         if (!savedUser.getName().isEmpty()) {
@@ -70,12 +70,12 @@ public class SignServiceImpl implements SignService {
         }
         return signUpResultDto;
     }
-
+   //로그인
     @Override
     public SignInResultDto signIn(UserSignInRequestDto userSignInRequestDto) throws RuntimeException {
         LOGGER.info("[getSignInResult] signDataHandler로 회원 정보 요청 ");
 
-        User user = userRepository.findByUserId(userSignInRequestDto.getId()).get();
+        User user = userRepository.findByUserId(userSignInRequestDto.getId()).orElse(null);
         logger.info("[getSignInResult] Id : {}",
                 userSignInRequestDto.getId());
 

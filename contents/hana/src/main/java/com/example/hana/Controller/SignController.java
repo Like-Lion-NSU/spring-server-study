@@ -5,7 +5,6 @@ import com.example.hana.Dto.SignUpResultDto;
 import com.example.hana.Dto.UserSignInRequestDto;
 import com.example.hana.Dto.UserSignUpRequestDto;
 import com.example.hana.Service.SignService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,32 +16,27 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-//import static org.hibernate.sql.ast.SqlTreeCreationLogger.LOGGER;
-//import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
-
-
-@Slf4j
 @RestController
-//@RequestMapping("/sign-api")
+//@RequestMapping("/sign-api") //url과 맵핑
 public class SignController {
 
-    Logger logger = LoggerFactory.getLogger(this.getClass());
+    Logger logger = LoggerFactory.getLogger(SignController.class);
 
-  private final SignService signService;
+   private final SignService signService;
 
     @Autowired
     public SignController(SignService signService) {
         this.signService = signService;
     }
 
-    //회원가입하는거
+    //회원가입
     @PostMapping("/sign-up")
     public SignUpResultDto signUp(@RequestBody UserSignUpRequestDto userSignUpRequestDto){
         logger.info("[signIn] 회원가입을 수행합니다. id : {}", userSignUpRequestDto.getId());
 
-        //오류->userSignUpRequestDto로 시도
         SignUpResultDto signUpResultDto = signService.signUp(userSignUpRequestDto);
-        if(signUpResultDto.getCode()==0)
+
+         if(signUpResultDto.getCode()==0)
             logger.info("[signUp] 회원가입을 완료했습니다. id : {}", userSignUpRequestDto.getId());
         return signUpResultDto;
     }
@@ -56,9 +50,9 @@ public class SignController {
                 userSignInRequestDto.getId());
 
         signInResultDto = signService.signIn(userSignInRequestDto);
+
         if(signInResultDto.getCode()==0){
-            // signInResultDto ->long id
-            logger.info("[signIn] 정상적으로 로그인되었습니다. id : {}, token : {}", userSignInRequestDto.getId() , signInResultDto.getToken());
+            logger.info("[signIn] 정상적으로 로그인되었습니다. id : {}, token : {}", userSignInRequestDto.getId(), signInResultDto.getToken());
             return signInResultDto;
         }
         return signInResultDto;
@@ -66,9 +60,10 @@ public class SignController {
 
     @GetMapping("/exception")
     public void exceptionTest() throws RuntimeException{
-        throw  new RuntimeException("접근이 금지되었습니다");
+        throw new RuntimeException("접근이 금지되었습니다");
     }
 
+    //예외
     @ExceptionHandler(value = RuntimeException.class)
     public ResponseEntity<Map<String, String>> ExceptionHandler(RuntimeException e){
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -76,7 +71,7 @@ public class SignController {
 
         logger.error("ExceptionHandler 호출, {}, {}",e.getCause(), e.getMessage());
 
-        Map<String, String>map=new HashMap<>();
+        Map<String, String> map = new HashMap<>();
         map.put("error type", httpStatus.getReasonPhrase());
         map.put("code", "400");
         map.put("message", "에러발생");

@@ -32,7 +32,6 @@ dependencies {
 
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.12'
     implementation 'org.springdoc:springdoc-openapi-security:1.6.12'
-
     implementation 'org.springdoc:springdoc-openapi-starter-common:2.0.2'
 
     //Spring Security

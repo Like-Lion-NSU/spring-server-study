@@ -7,10 +7,8 @@ import com.example.hana.Dto.UserSignUpRequestDto;
 
 
 public interface SignService {
-
+//회원가입
    public SignUpResultDto signUp(UserSignUpRequestDto userSignUpRequestDto);
-
- //  SignInResultDto signUp(String id, String password, String name, String role);
-
+//로그인
    public SignInResultDto signIn(UserSignInRequestDto userSignInRequestDto) throws RuntimeException;
 }

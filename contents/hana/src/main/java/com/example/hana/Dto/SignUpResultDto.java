@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+//성공 여부를 알려주고, http 상태코드 메시지를 저장하는 dto
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
