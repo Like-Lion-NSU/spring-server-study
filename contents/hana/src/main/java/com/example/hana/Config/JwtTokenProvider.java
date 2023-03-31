@@ -75,7 +75,6 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-
     public String getUsername(String token) {
         LOGGER.info("[getUsername] 토큰 기반 회원 구별 정보 추출");
         //secretKey 설정, sub 값 추출
