@@ -39,7 +39,7 @@ public class User implements UserDetails {
     private String name;
 
     //todoList
-    //@JsonManagedReference
+    @JsonManagedReference
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Todo> todoList = new ArrayList<>();
 

@@ -88,7 +88,7 @@ public class JwtTokenProvider {
         logger.info("[getAuthentication] 토큰 인증 정보 조회 완료 UserDetails UserName : { }",
                 userDetails.getUsername());
 
-        return new UsernamePasswordAuthenticationToken(userDetails,"",userDetails.getAuthorities()); //인증용 객체
+        return new UsernamePasswordAuthenticationToken(userDetails,"",userDetails.getAuthorities()); //인증용 객체 ->  UsernamePasswordAuthenticationToken은 추후 인증이 끝나고 SecurityContextHolder.getContext()에 등록될 Authentication 객체이다.
 
     }
 
