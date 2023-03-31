@@ -92,7 +92,8 @@ public class JwtTokenProvider {
         try{
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);  // Decode해서 데이터를 얻어냄
 
-            return !claims.getBody().getExpiration().before(new Date());    // 현재 시간이 만료되지 않으면 true?
+            return !claims.getBody().getExpiration().before(new Date());
+            // 유효시간 < Date -> !true -> false  * 현재 시간이 유효시간을 지났기 때문에 false를 리턴함
         }catch(Exception e){
             LOGGER.info("[validateToken] 토큰 유효 체크 예외 발생");
             return false;
