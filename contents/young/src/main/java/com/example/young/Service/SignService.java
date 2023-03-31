@@ -6,11 +6,11 @@ import com.example.young.dto.UserSignInRequestDto;
 import com.example.young.dto.UserSignUpRequestDto;
 
 public interface SignService {
-    public SignUpResultDto signUp(UserSignUpRequestDto userSignUpRequestDto);
+    public SignUpResultDto signUp(UserSignUpRequestDto userSignUpRequestDto);       // 회원가입
 
     //  SignInResultDto signUp(String id, String password, String name, String role);
 
-    public SignInResultDto signIn(UserSignInRequestDto userSignInRequestDto) throws RuntimeException;
+    public SignInResultDto signIn(UserSignInRequestDto userSignInRequestDto) throws RuntimeException;   // 로그인
 
 
 }

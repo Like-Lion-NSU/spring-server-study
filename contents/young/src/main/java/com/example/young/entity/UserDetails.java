@@ -5,9 +5,12 @@ import org.springframework.security.core.GrantedAuthority;
 import java.io.Serializable;
 import java.util.Collection;
 
+
+
+
 public interface UserDetails extends Serializable {
 
-    Collection<? extends GrantedAuthority> getAuthorities();
+    Collection<? extends GrantedAuthority> getAuthorities();  // getAuthorities() : 계정이 가지고 있는 권한 목록 리턴
 
     String getPassword();       // 비밀번호 리턴
 
@@ -21,8 +24,5 @@ public interface UserDetails extends Serializable {
 
     boolean isEnabled();        // 계정 활성 여부(true - 활성 됨)
 
-    /*getAuthorities() : 계정이 가지고 있는 권한 목록 리턴
-     getPassword
-    *
-    */
+
 }

@@ -2,6 +2,8 @@ package com.example.young.dto;
 
 import lombok.*;
 
+
+// Response로 전달되는 Dto
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

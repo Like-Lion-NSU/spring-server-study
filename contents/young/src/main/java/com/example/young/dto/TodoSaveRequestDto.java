@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import static org.springframework.data.jpa.domain.AbstractAuditable_.createdDate;
 
+
+// 일정 저장
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TodoSaveRequestDto{

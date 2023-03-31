@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+// User 회원가입 요청 Dto
 @Getter
 @Builder
 @NoArgsConstructor

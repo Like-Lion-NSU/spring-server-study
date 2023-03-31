@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
-@RestController
+@RestController     // @Controller에 @ResponseBody 추가된 어노테이션
 @RequestMapping("/sign-api")
 public class SignController {
 
@@ -30,6 +30,7 @@ public class SignController {
         this.signService = signService;
     }
 
+    // SignIn Controller
     @PostMapping(value = "/sign-in")
     public SignInResultDto signIn(@RequestBody UserSignInRequestDto userSignInRequestDto)
         throws RuntimeException{
@@ -42,6 +43,7 @@ public class SignController {
         return signInResultDto;
     }
 
+    // SignUp Controller
     @PostMapping(value = "/sign-up")
     public SignUpResultDto signUp(@RequestBody UserSignUpRequestDto userSignUpRequestDto){
             LOGGER.info("[signUp] 회원가입을 수행합니다. id : {}, password : ****, name : {}, role : {}", userSignUpRequestDto.getId(),
@@ -51,10 +53,12 @@ public class SignController {
             LOGGER.info("[signUp] 회원가입을 완료했습니다. id : {}", userSignUpRequestDto.getId());
             return signUpResultDto;
         }
+
     @GetMapping(value = "/exception")
     public void exceptionTest() throws RuntimeException{
         throw new RuntimeException("접근이 금지되었습니다.");
     }
+
 
     @ExceptionHandler(value = RuntimeException.class)
     public ResponseEntity<Map<String, String>> ExceptionHandler(RuntimeException e){

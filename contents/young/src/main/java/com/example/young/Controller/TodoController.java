@@ -17,35 +17,35 @@ import java.util.Optional;
 public class TodoController {
     private TodoService todoService;
 
-    @Autowired
+    @Autowired  // 생성자
     public TodoController(TodoService todoService){
         this.todoService = todoService;
     }
 
-    @PostMapping("/todo/{id}")
+    @PostMapping("/todo/{id}")      // 일정 추가
     public Long saveTodo(@PathVariable String id, @RequestBody TodoSaveRequestDto todoSaveRequestDto){
         Long saveTodo = todoService.saveTodo(id,todoSaveRequestDto);
         return saveTodo;
     }
 
-    @GetMapping("/todos/{id}")
+    @GetMapping("/todos/{id}")      // 일정 가져오기
     public List<Todo> findTodos(@PathVariable Long id){
         List<Todo> todos = todoService.findTodos(id);
         return todos;
     }
 
-    @GetMapping("/todo/{id}")
+    @GetMapping("/todo/{id}")       //
     public Optional<Todo> todo(@PathVariable Long id){
         Optional<Todo> todo = todoService.findById(id);
         return todo;
     }
 
-    @PatchMapping("/todo/{id}")
+    @PatchMapping("/todo/{id}")     // 일정수정
     public void editTodo(@PathVariable Long id, @RequestBody TodoEditRequestDto todoEditRequestDto){
         todoService.editTodo(id, todoEditRequestDto);
     }
 
-    @DeleteMapping("/todo/{id}")
+    @DeleteMapping("/todo/{id}")        // 일정 삭제
     public void deleteTodo(@PathVariable Long id){
         todoService.deleteTodo(id);
     }

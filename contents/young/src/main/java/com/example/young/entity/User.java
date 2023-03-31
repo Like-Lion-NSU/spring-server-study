@@ -23,22 +23,22 @@ import java.util.stream.Collectors;
 public class User implements UserDetails{
     @Id
     @GeneratedValue(strategy =GenerationType.IDENTITY)
-    private Long id;
+    private Long id;        // 식별 키
 
     @Column(nullable = false, unique = true)
-    private String userId;
+    private String userId;      // 사용자 Id
 
     @Column(nullable = false)
-    private String password;
+    private String password;    // 사용자 password
 
     @Column(nullable = false)
-    private String name;
+    private String name;        // 사용자 이름
 
     @JsonManagedReference
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Todo> todoList = new ArrayList<>();
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.EAGER)     // 값 타입 컬랙션 매핑 때 쓰는 어노테이션, 해당 필드가 컬렉션 객체임을 JAP에게 알려줌
     private List<String> roles = new ArrayList<>();
 
 //    @Builder
@@ -50,6 +50,7 @@ public class User implements UserDetails{
 //        this.roles.add(role);
 //    }
 
+    /* Interface UserDetails Override */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());

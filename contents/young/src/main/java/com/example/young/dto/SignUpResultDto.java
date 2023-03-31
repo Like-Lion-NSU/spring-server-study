@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+
+ // Response로 전달되는 Dto
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

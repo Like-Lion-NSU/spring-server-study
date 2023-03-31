@@ -16,6 +16,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response,
                        AccessDeniedException exception) throws IOException {
+        // AccessDeniedException = 엑세스 권한이 없는 리소스에 접근할 경우 발생하는 예외
         LOGGER.info("[handle] 접근이 막혔을 경우 경로 리다이렉트");
         response.sendRedirect("/sign-api/exception");
     }

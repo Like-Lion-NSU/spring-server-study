@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+// 일정 완료 여부
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TodoEditRequestDto {

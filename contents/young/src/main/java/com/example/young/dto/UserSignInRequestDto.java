@@ -3,6 +3,7 @@ package com.example.young.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+// User 로그인 요청 Dto
 @Getter
 @NoArgsConstructor
 public class UserSignInRequestDto {
