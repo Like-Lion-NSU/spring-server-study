@@ -7,6 +7,7 @@ import com.example.young.entity.Todo;
 import com.example.young.entity.User;
 import com.example.young.Service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,8 @@ public class TodoController {
 
     @PostMapping("/todo/{id}")      // 일정 추가
     public Long saveTodo(@PathVariable String id, @RequestBody TodoSaveRequestDto todoSaveRequestDto){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = (User)principal;
         Long saveTodo = todoService.saveTodo(id,todoSaveRequestDto);
         return saveTodo;
     }

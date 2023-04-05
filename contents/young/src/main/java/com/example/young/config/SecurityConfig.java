@@ -43,7 +43,7 @@ public class SecurityConfig {
                 // exception 단어가 들어간 경로 모두 허용
                 .requestMatchers("**exception**").permitAll()
                 // 인증된 권한(ADMIN)을 가진 사용자에게 허용
-                .anyRequest().hasRole("ADMIN")
+                //.anyRequest().hasRole("ADMIN")
 
                 .and()
                 // 권한을 확인하는 과정에서 통과하지 못하는 예외가 발생할 경우 예외 전달
