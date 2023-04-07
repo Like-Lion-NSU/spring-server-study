@@ -21,7 +21,7 @@ public class Todo {
     @Column(nullable = false)
     private String item;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean isDone;
 
     @ManyToOne

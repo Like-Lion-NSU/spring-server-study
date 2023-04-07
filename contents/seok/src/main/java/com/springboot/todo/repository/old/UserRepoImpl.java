@@ -1,4 +1,4 @@
-package com.springboot.todo.repository.temp;
+package com.springboot.todo.repository.old;
 
 import com.springboot.todo.entity.User;
 
