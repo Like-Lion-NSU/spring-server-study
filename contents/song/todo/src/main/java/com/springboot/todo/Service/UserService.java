@@ -8,7 +8,10 @@ import java.util.Optional;
 
 public interface UserService {
     //User 등록
-    public Long signUp(UserSignUpRequestDto userSignUpRequestDto);
+    public SignUpResultDto signUp(UserSignUpRequestDto userSignUpRequestDto);
+
+    //로그인
+    public SignInResultDto signIn(UserSignInRequestDto userSignInRequestDto) throws RuntimeException;
 
     //User 전체 조회
     public List<User> findUsers();

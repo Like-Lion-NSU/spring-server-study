@@ -1,19 +1,24 @@
 package com.springboot.todo.Controller;
 
 
-import com.springboot.todo.Dto.UserSignUpRequestDto;
-import com.springboot.todo.Dto.UserUpdateRequestDto;
+import com.springboot.todo.Dto.*;
 import com.springboot.todo.Entity.User;
 import com.springboot.todo.Service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
+@Slf4j
 public class UserController {
     private final UserService userService;
 
@@ -23,12 +28,27 @@ public class UserController {
     }
 
     //회원가입
-    @PostMapping("sign-up")
-    public Long signUp(@RequestBody UserSignUpRequestDto userSignUpRequestDto){ //json 형식
-        Long signUp = userService.signUp(userSignUpRequestDto); //userService의 signup 메소드
-        return signUp;
+    @PostMapping("/sign-up")
+    public SignUpResultDto signUp(@RequestBody UserSignUpRequestDto userSignUpRequestDto){ //json 형식
+        log.info("[signIn] 회원가입을 시도하고 있습니다. id : {}, pw : ****", userSignUpRequestDto.getId());
+        SignUpResultDto signUpResultDto = userService.signUp(userSignUpRequestDto);
+        if(signUpResultDto.getCode()==0)
+            log.info("[signUp] 회원가입을 완료했습니다. id : {}", userSignUpRequestDto.getId());
+        return signUpResultDto;
     }
 
+    //로그인
+    @PostMapping("/sign-in")
+    public SignInResultDto signIn(@RequestBody UserSignInRequestDto userSignInRequestDto) throws RuntimeException{
+        log.info("[signIn] 로그인을 시도하고 있습니다. id : {}, pw : ****", userSignInRequestDto.getId());
+        SignInResultDto signInResultDto = userService.signIn(userSignInRequestDto);
+
+        if (signInResultDto.getCode() == 0) {
+            log.info("[signIn] 정상적으로 로그인되었습니다. id : {}, token : {}", userSignInRequestDto.getId(), signInResultDto.getToken());
+            return signInResultDto;
+        }
+        return signInResultDto;
+    }
     //User 전체 조회
     @GetMapping("/user")
     public List<User> user(){ //리스트 형식으로 리턴
@@ -51,5 +71,25 @@ public class UserController {
     @DeleteMapping("/user/{id}")
     public void deleteUser(@PathVariable Long id){
         userService.deleteUser(id); //userService의 deleteUser 메소드에 시스템 아이디값 전달
+    }
+
+    @GetMapping(value="/exception")
+    public void exceptionTest() throws RuntimeException{
+        throw new RuntimeException("접근이 금지되었습니다.");
+    }
+
+    @ExceptionHandler(value=RuntimeException.class)
+    public ResponseEntity<Map<String, String>> handle(RuntimeException e){
+        HttpHeaders responseHeaders = new HttpHeaders();
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        log.error("ExceptionHandler 호출, {}, {}", e.getCause(), e.getMessage());
+
+        Map<String, String> map = new HashMap<>();
+        map.put("error type", httpStatus.getReasonPhrase());
+        map.put("code", "400");
+        map.put("message", "에러발생");
+
+        return new ResponseEntity<>(map, responseHeaders, httpStatus);
     }
 }
