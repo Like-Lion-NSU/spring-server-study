@@ -2,6 +2,10 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+
     <mapping directory="$PROJECT_DIR$/contents/hana" vcs="Git" />
+
+    <mapping directory="$PROJECT_DIR$/contents/seok" vcs="Git" />
+
   </component>
 </project>

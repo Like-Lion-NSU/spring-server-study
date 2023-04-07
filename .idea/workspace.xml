@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+<<<<<<< HEAD
+    <list default="true" id="b485ae62-ece8-4426-9ae4-420aa1e940c3" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/contents/seok/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/contents/seok/readme.md" afterDir="false" />
+=======
+    <list default="true" id="6403c6df-59d0-404a-89cf-cefb22a0222d" name="Changes" comment="[Feat] Todo domain 작성 - #1">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+>>>>>>> f1e0a31bb1671b5980a185c53dda7e140c68f5a9
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+<<<<<<< HEAD
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+    <projectState path="$PROJECT_DIR$/contents/seok">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/contents/seok" />
+=======
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+>>>>>>> f1e0a31bb1671b5980a185c53dda7e140c68f5a9
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+<<<<<<< HEAD
+  <component name="ProjectId" id="2KmTjtgW2A4BilQeUynUGaX5Szz" />
+=======
+  <component name="ProjectId" id="2KmQi6I6v7vC3mmYVwTEjCUJw1b" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+>>>>>>> f1e0a31bb1671b5980a185c53dda7e140c68f5a9
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+<<<<<<< HEAD
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/wooseok/IdeaProjects/spring-server-study&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;70ab5eafc742d43bfbee6c92145ba50e&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RunManager">
+    <configuration name="SpringServerStudyApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="todo.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.springboot.todo.SpringServerStudyApplication" />
+=======
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/user/Desktop/song/멋사/spring-server-study-master/contents/song",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="spring-server-study-master" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="spring-server-study-master" />
+      <option name="filePath" />
+>>>>>>> f1e0a31bb1671b5980a185c53dda7e140c68f5a9
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+<<<<<<< HEAD
+      <changelist id="b485ae62-ece8-4426-9ae4-420aa1e940c3" name="Changes" comment="" />
+      <created>1674578899008</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1674578899008</updated>
+      <workItem from="1674578901396" duration="626000" />
+      <workItem from="1674579537639" duration="94000" />
+      <workItem from="1674580150667" duration="3580000" />
+    </task>
+=======
+      <changelist id="6403c6df-59d0-404a-89cf-cefb22a0222d" name="Changes" comment="" />
+      <created>1674577402767</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1674577402767</updated>
+      <workItem from="1674577404191" duration="292000" />
+      <workItem from="1674582423697" duration="45000" />
+      <workItem from="1674582482363" duration="710000" />
+    </task>
+    <task id="LOCAL-00001" summary="test commit">
+      <created>1674577641373</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1674577641373</updated>
+    </task>
+    <task id="LOCAL-00002" summary="[Feat] Todo domain 작성 - #1">
+      <created>1674582724867</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1674582724867</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
+>>>>>>> f1e0a31bb1671b5980a185c53dda7e140c68f5a9
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+<<<<<<< HEAD
+=======
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="test commit" />
+    <MESSAGE value="[Feat] Todo domain 작성 - #1" />
+    <option name="LAST_COMMIT_MESSAGE" value="[Feat] Todo domain 작성 - #1" />
+  </component>
+>>>>>>> f1e0a31bb1671b5980a185c53dda7e140c68f5a9
+</project>
