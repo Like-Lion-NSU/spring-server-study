@@ -8,11 +8,14 @@ import com.example.hana.Dto.TodoSaveRequestDto;
 import com.example.hana.Repository.TodoRepository;
 import com.example.hana.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
+
 @Service
 public class TodoServiceImpl implements TodoService{
 
@@ -20,14 +23,15 @@ public class TodoServiceImpl implements TodoService{
     private final UserRepository userRepository;
 
     //생성자를 통해 의존성 주입 ->RequiredArgsConstructor 어노테이션 사용
-//    @Autowired
-//    public TodoServiceImpl(TodoRepository todoRepository, UserRepository userRepository){
-//        this.todoRepository=todoRepository;
-//        this.userRepository=userRepository;
-//    }
+    @Autowired
+    public TodoServiceImpl(TodoRepository todoRepository, UserRepository userRepository){
+        this.todoRepository=todoRepository;
+        this.userRepository=userRepository;
+    }
 
     //todo생성
     @Override
+    @Transactional
     public Long saveTodo(String id, TodoSaveRequestDto todoSaveRequestDto) {
         User user = userRepository.findByUserId(id).get();
         Todo todo = todoSaveRequestDto.toEntity();

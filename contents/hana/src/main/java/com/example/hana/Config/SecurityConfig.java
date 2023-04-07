@@ -41,7 +41,7 @@ public class SecurityConfig {
 
                 .requestMatchers("**exception**").permitAll()
 
-                .anyRequest().hasRole("ADMIN")
+//                .anyRequest().hasRole("ADMIN")
 
                 .and()
                 .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())

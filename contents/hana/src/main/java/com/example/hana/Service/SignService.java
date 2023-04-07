@@ -11,4 +11,5 @@ public interface SignService {
    public SignUpResultDto signUp(UserSignUpRequestDto userSignUpRequestDto);
 //로그인
    public SignInResultDto signIn(UserSignInRequestDto userSignInRequestDto) throws RuntimeException;
+
 }

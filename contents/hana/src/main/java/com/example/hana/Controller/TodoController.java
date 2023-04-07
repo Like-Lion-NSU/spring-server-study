@@ -3,8 +3,10 @@ package com.example.hana.Controller;
 import com.example.hana.Dto.TodoEditRequestDto;
 import com.example.hana.Dto.TodoSaveRequestDto;
 import com.example.hana.Entity.Todo;
+import com.example.hana.Entity.User;
 import com.example.hana.Service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,12 +23,13 @@ public class TodoController {
         this.todoService=todoService;
     }
 
-    @PostMapping("/todo/{id}")
-    public Long saveTodo(@PathVariable String id, @RequestBody TodoSaveRequestDto todoSaveRequestDto){
-        Long saveTodo = todoService.saveTodo(id,todoSaveRequestDto);
+    @PostMapping("/todo")
+    public Long saveTodo( @RequestBody TodoSaveRequestDto todoSaveRequestDto){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = (User)principal;
+        Long saveTodo = todoService.saveTodo(user.getUserId(),todoSaveRequestDto);
         return saveTodo;
     }
-
     @GetMapping("/todos/{id}")
     public List<Todo> findTodos(@PathVariable Long id){
         List<Todo> todos = todoService.findTodos(id);
