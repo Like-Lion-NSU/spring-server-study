@@ -28,35 +28,60 @@ public class TodoServiceImpl implements TodoService{
     @Override
     @Transactional
     public Long saveTodo(String id, TodoSaveRequestDto todoSaveRequestDto) { //todo pk값 리턴
-        User user = userRepository.findByUserId(id).get(); //유저 아이디로 유저 dao에서 찾음
-        Todo todo = todoSaveRequestDto.toEntity(); //dto에 있는 toEntity로 값 초기화 시켜줌
-        todo.setUser(user); //todo 유저에 유저 정보 저장
-        todoRepository.save(todo); //todo dao에 저장
-        return todo.getId();
+        try {
+            User user = userRepository.findByUserId(id).get(); //유저 아이디로 유저 dao에서 찾음
+            Todo todo = todoSaveRequestDto.toEntity(); //dto에 있는 toEntity로 값 초기화 시켜줌
+            todo.setUser(user); //todo 유저에 유저 정보 저장
+            todoRepository.save(todo); //todo dao에 저장
+            return todo.getId();
+        }catch(Exception e){
+            e.printStackTrace();
+            throw e;
+        }
     }
     //Todo 전체 조회
     @Override
     public List<Todo> findTodos(Long id){ //List로 todo 조회 결과 받음
-        return todoRepository.findByUser_Id(id); // todo 외래키로 todo 조회
-    }
+        try {
+            return todoRepository.findByUser_Id(id); // todo 외래키로 todo 조회
+        }catch(Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+        }
 
     //Todo 특정 조회
     @Override
     public Optional<Todo> findById(Long id) { //기본키로 특정 todo 조회
-        return todoRepository.findById(id);
+        try {
+            return todoRepository.findById(id);
+        }catch(Exception e){
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     //Todo 수정
     @Override
     public void editTodo(Long id, TodoEditRequestDto todoEditRequestDto) {
-        Todo todo = todoRepository.findById(id).orElse(null);
-        todo.setIsDone(todoEditRequestDto.getIsDone());
-        todoRepository.save(todo);
+        try {
+            Todo todo = todoRepository.findById(id).orElse(null);
+            todo.setIsDone(todoEditRequestDto.getIsDone());
+            todoRepository.save(todo);
+        }catch(Exception e){
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     //Todo 삭제
     @Override
     public void deleteTodo(Long id) {
-        todoRepository.deleteById(id);
+        try {
+            todoRepository.deleteById(id);
+        }catch(Exception e){
+            e.printStackTrace();
+            throw e;
+        }
     }
 }
