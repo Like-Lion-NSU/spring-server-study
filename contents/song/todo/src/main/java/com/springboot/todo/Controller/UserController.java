@@ -70,33 +70,33 @@ public class UserController {
     //User 조회
     @GetMapping("/user/{id}")
     public Optional<User> findOne(@PathVariable String id){ //optional 형식으로 리턴
-        try {
+//        try {
             Optional<User> user = userService.findOne(id); //Optional 형식인 자료형 변수에 userService의 findOne 메소드 리턴 값을 user에 저장
             return user;
-        }catch(Exception e){
-            e.printStackTrace();
-            throw e;
-        }
+//        }catch(Exception e){
+//            e.printStackTrace();
+//            throw e;
+//        }
     }
 
     @PatchMapping("/user/{id}")
     public void updateUser(@PathVariable String id,@RequestBody UserUpdateRequestDto userUpdateRequestDto){ //url의 {}안의 url이름 변수명이 같아야함, 다르게 하고 싶을 경우 @Pathvariable(여기다가 명시)
-        try {
+//        try {
             userService.updateUser(id, userUpdateRequestDto); //userService의 updateUser 메소드 파라미터에 id랑 userUpdateReqestDto 전달
-        }catch(Exception e){
-            e.printStackTrace();
-            throw e;
-        }
+//        }catch(Exception e){
+//            e.printStackTrace();
+//            throw e;
+//        }
     }
 
     @DeleteMapping("/user/{id}")
     public void deleteUser(@PathVariable Long id){
-        try {
+//        try {
             userService.deleteUser(id); //userService의 deleteUser 메소드에 시스템 아이디값 전달
-        }catch(Exception e){
-            e.printStackTrace();
-            throw e;
-        }
+//        }catch(Exception e){
+//            e.printStackTrace();
+//            throw e;
+//        }
     }
 
     @GetMapping(value="/exception")
