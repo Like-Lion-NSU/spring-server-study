@@ -14,8 +14,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class SignServiceImpl implements SignService{
@@ -34,10 +39,27 @@ public class SignServiceImpl implements SignService{
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Override
+    public Map<String, String> validateHandling(Errors errors) {
+        Map<String, String> validatorResult = new HashMap<>();
+
+        for (FieldError error : errors.getFieldErrors()) {
+            String validKeyName = String.format("valid_%s", error.getField());
+            validatorResult.put(validKeyName, error.getDefaultMessage());
+            /*  key : valid_{dtd 필드명}, Message : dto에서 작성한 message 값
+                erros.getFieldErrors() : 유효성 검사 실패 필드 목록 가져오기
+                error.getField() : 유효성 검사 실패 필드명 가져오기
+                error.getDefaultMessage() : 유효성 검사 실패한 필드에 정의된 메시지 가져오기 */
+        }
+
+        return validatorResult;
+    }
+
     @Override       // 회원가입
     public SignUpResultDto signUp(UserSignUpRequestDto userSignUpRequestDto) {
         LOGGER.info("[getSignUpResult] 회원 가입 정보 전달");
         User user;
+
         if(userSignUpRequestDto.getRole().equalsIgnoreCase("admin")){       //ADMIN
             user = User.builder()
                     .userId(userSignUpRequestDto.getId())
@@ -92,6 +114,24 @@ public class SignServiceImpl implements SignService{
         return signInResultDto;
     }
 
+    @Override
+    @Transactional(readOnly = true)     // 트랜젝션 중 read만 실시. 즉 cud는 멈춰있음
+    public void checkUserIdDuplication(UserSignUpRequestDto userSignUpRequestDto){        // 아이디 중복 확인
+        boolean usernameDuplicate = userRepoJPA.existsByUserId(userSignUpRequestDto.toEntity().getId());
+        if (usernameDuplicate) {
+            throw new IllegalStateException("이미 존재하는 아이디입니다. 다른 아이디를 입력해주세요.");
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public void checkNameDuplication(UserSignUpRequestDto userSignUpRequestDto) {       // 이름 중복 확인
+        boolean nicknameDuplicate = userRepoJPA.existsByName(userSignUpRequestDto.toEntity().getName());
+        if (nicknameDuplicate) {
+            throw new IllegalStateException("이미 존재하는 이름입니다. 다른 이름을 입력해주세요.");
+        }
+    }
+
 
 
     private void setSuccessResult(SignUpResultDto result){      // 성공 결과 데이터 설정
@@ -105,4 +145,6 @@ public class SignServiceImpl implements SignService{
         result.setCode(CommonResponse.FAIL.getCode());
         result.setMsg(CommonResponse.FAIL.getMsg());
     }
+
 }
+

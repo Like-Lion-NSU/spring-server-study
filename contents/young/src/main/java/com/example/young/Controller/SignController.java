@@ -7,12 +7,15 @@ import com.example.young.dto.SignInResultDto;
 import com.example.young.dto.SignUpResultDto;
 import com.example.young.dto.UserSignInRequestDto;
 import com.example.young.dto.UserSignUpRequestDto;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -32,7 +35,7 @@ public class SignController {
 
     // SignIn Controller
     @PostMapping(value = "/sign-in")
-    public SignInResultDto signIn(@RequestBody UserSignInRequestDto userSignInRequestDto)
+    public SignInResultDto signIn(@Valid @RequestBody UserSignInRequestDto userSignInRequestDto)    // 로그인 유효성 검사를 해야하는지..?
         throws RuntimeException{
         LOGGER.info("[sigiIn] 로그인을 시도하고 있습니다. id : {}, pw : ****",userSignInRequestDto.getId());
         SignInResultDto signInResultDto = signService.signIn(userSignInRequestDto);
@@ -45,9 +48,23 @@ public class SignController {
 
     // SignUp Controller
     @PostMapping(value = "/sign-up")
-    public SignUpResultDto signUp(@RequestBody UserSignUpRequestDto userSignUpRequestDto){
+    public SignUpResultDto signUp(@Valid @RequestBody UserSignUpRequestDto userSignUpRequestDto, Errors errors, Model model){
             LOGGER.info("[signUp] 회원가입을 수행합니다. id : {}, password : ****, name : {}, role : {}", userSignUpRequestDto.getId(),
                     userSignUpRequestDto.getName(), userSignUpRequestDto.getRole());
+            if(errors.hasErrors()){
+                /* 회원가입 실패시 입력 데이터 값 유지 */
+                model.addAttribute("userSignUpRequsetDto", userSignUpRequestDto);
+
+                /* 유효성 통과 못한 필드와 메시지를 핸들링 */
+                Map<String, String> validatorResult = signService.validateHandling(errors);
+                for (String key : validatorResult.keySet()) {
+                    model.addAttribute(key, validatorResult.get(key));
+                }
+                signService.checkUserIdDuplication(userSignUpRequestDto);
+                signService.checkNameDuplication(userSignUpRequestDto);
+
+            }
+
             SignUpResultDto signUpResultDto = signService.signUp(userSignUpRequestDto);
 
             LOGGER.info("[signUp] 회원가입을 완료했습니다. id : {}", userSignUpRequestDto.getId());
@@ -59,7 +76,7 @@ public class SignController {
         throw new RuntimeException("접근이 금지되었습니다.");
     }
 
-
+//    @ControllerAdvice  쓰고싶어요
     @ExceptionHandler(value = RuntimeException.class)
     public ResponseEntity<Map<String, String>> ExceptionHandler(RuntimeException e){
         HttpHeaders responseHeaders = new HttpHeaders();
