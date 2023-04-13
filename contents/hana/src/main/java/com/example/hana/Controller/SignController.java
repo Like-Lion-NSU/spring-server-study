@@ -1,5 +1,6 @@
 package com.example.hana.Controller;
 
+import org.springframework.ui.Model;
 import com.example.hana.Dto.SignInResultDto;
 import com.example.hana.Dto.SignUpResultDto;
 import com.example.hana.Dto.UserSignInRequestDto;
@@ -10,11 +11,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.HashMap;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.validation.Errors;
 
 @RestController
 //@RequestMapping("/sign-api") //url과 맵핑
@@ -29,17 +32,41 @@ public class SignController {
         this.signService = signService;
     }
 
-    //회원가입
-    @PostMapping("/sign-up")
-    public SignUpResultDto signUp(@RequestBody UserSignUpRequestDto userSignUpRequestDto){
-        logger.info("[signIn] 회원가입을 수행합니다. id : {}", userSignUpRequestDto.getId());
 
+      @PostMapping("/sign-up")
+    public SignUpResultDto signUp(@Valid @RequestBody UserSignUpRequestDto userSignUpRequestDto, Errors errors, Model model) {
+
+        logger.info("[signIn] 회원가입을 수행합니다. id : {}", userSignUpRequestDto.getId());
         SignUpResultDto signUpResultDto = signService.signUp(userSignUpRequestDto);
 
-         if(signUpResultDto.getCode()==0)
+        if (errors.hasErrors()) {
+            // 회원가입 실패시, 입력 데이터를 유지
+         //  model.addAttribute("userSignUpRequestDto", userSignUpRequestDto);
+
+            // 유효성 통과 못한 필드와 메시지를 핸들링
+            Map<String, String> validatorResult = signService.validateHandling(errors);
+            for (String key : validatorResult.keySet()) {
+                model.addAttribute(key, validatorResult.get(key));
+            } logger.info("유효성 통과 못함");
+            signService.checkUserIdDuplication(userSignUpRequestDto);
+
+        }else{
             logger.info("[signUp] 회원가입을 완료했습니다. id : {}", userSignUpRequestDto.getId());
+        }
+
         return signUpResultDto;
     }
+
+//    @PostMapping("/sign-up")
+//    public SignUpResultDto signUp(@RequestBody UserSignUpRequestDto userSignUpRequestDto){
+//        logger.info("[signIn] 회원가입을 수행합니다. id : {}", userSignUpRequestDto.getId());
+//
+//        SignUpResultDto signUpResultDto = signService.signUp(userSignUpRequestDto);
+//
+//         if(signUpResultDto.getCode()==0)
+//            logger.info("[signUp] 회원가입을 완료했습니다. id : {}", userSignUpRequestDto.getId());
+//        return signUpResultDto;
+//    }
 
     //로그인
     @PostMapping("/sign-in")
@@ -78,4 +105,5 @@ public class SignController {
 
         return new ResponseEntity<>(map, responseHeaders, httpStatus);
     }
+
 }
