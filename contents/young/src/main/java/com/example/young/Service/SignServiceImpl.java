@@ -2,10 +2,7 @@ package com.example.young.Service;
 
 import com.example.young.config.CommonResponse;
 import com.example.young.config.JwtTokenProvider;
-import com.example.young.dto.SignInResultDto;
-import com.example.young.dto.SignUpResultDto;
-import com.example.young.dto.UserSignInRequestDto;
-import com.example.young.dto.UserSignUpRequestDto;
+import com.example.young.dto.*;
 import com.example.young.entity.User;
 import com.example.young.repository.UserRepo;
 import com.example.young.repository.UserRepoJPA;
@@ -18,9 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class SignServiceImpl implements SignService{
@@ -46,7 +41,7 @@ public class SignServiceImpl implements SignService{
         for (FieldError error : errors.getFieldErrors()) {
             String validKeyName = String.format("valid_%s", error.getField());
             validatorResult.put(validKeyName, error.getDefaultMessage());
-            /*  key : valid_{dtd 필드명}, Message : dto에서 작성한 message 값
+            /*  key : valid_{dto 필드명}, Message : dto에서 작성한 message 값
                 erros.getFieldErrors() : 유효성 검사 실패 필드 목록 가져오기
                 error.getField() : 유효성 검사 실패 필드명 가져오기
                 error.getDefaultMessage() : 유효성 검사 실패한 필드에 정의된 메시지 가져오기 */
@@ -62,14 +57,14 @@ public class SignServiceImpl implements SignService{
 
         if(userSignUpRequestDto.getRole().equalsIgnoreCase("admin")){       //ADMIN
             user = User.builder()
-                    .userId(userSignUpRequestDto.getId())
+                    .userId(userSignUpRequestDto.getUserId())
                     .name(userSignUpRequestDto.getName())
                     .password(passwordEncoder.encode(userSignUpRequestDto.getPassword()))   // Password 암호화
                     .roles(Collections.singletonList("ROLE_ADMIN"))
                     .build();
         } else {    // USER
             user = User.builder()
-                    .userId(userSignUpRequestDto.getId())
+                    .userId(userSignUpRequestDto.getUserId())
                     .name(userSignUpRequestDto.getName())
                     .password(passwordEncoder.encode(userSignUpRequestDto.getPassword()))
                     .roles(Collections.singletonList("ROLE_USER"))
@@ -117,7 +112,7 @@ public class SignServiceImpl implements SignService{
     @Override
     @Transactional(readOnly = true)     // 트랜젝션 중 read만 실시. 즉 cud는 멈춰있음
     public void checkUserIdDuplication(UserSignUpRequestDto userSignUpRequestDto){        // 아이디 중복 확인
-        boolean usernameDuplicate = userRepoJPA.existsByUserId(userSignUpRequestDto.toEntity().getId());
+        boolean usernameDuplicate = userRepoJPA.existsByUserId(userSignUpRequestDto.toEntity().getUserId());
         if (usernameDuplicate) {
             throw new IllegalStateException("이미 존재하는 아이디입니다. 다른 아이디를 입력해주세요.");
         }
@@ -132,7 +127,36 @@ public class SignServiceImpl implements SignService{
         }
     }
 
+    //User 전체 조회
+    @Override
+    public List<User> findUsers(){ //리턴타입 리스트
+        return userRepoJPA.findAll(); // 모든 회원 조회
+    }
 
+    //User 특정 조회
+    @Override
+    public Optional<User> findOne(String id) throws NoSuchElementException{
+        User user = userRepoJPA.findByUserId(id).orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다."));
+        return userRepoJPA.findByUserId(id);
+    }
+
+    //User 수정
+    @Override
+    public void editUser(String id, UserEditRequestDto usereditRequestDto) throws NoSuchElementException{
+        User user = userRepoJPA.findByUserId(id).orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다."));
+        user.setUserId(usereditRequestDto.getId());
+        user.setName(usereditRequestDto.getName());
+        user.setPassword(usereditRequestDto.getPassword());
+
+        userRepoJPA.save(user);
+    }
+
+    //User 삭제
+    @Override
+    public void deleteUser(Long id) throws NoSuchElementException{
+        userRepoJPA.findById(id).orElseThrow(()-> new NoSuchElementException("존재하지 않는 회원입니다."));
+        userRepoJPA.deleteById(id);
+    }
 
     private void setSuccessResult(SignUpResultDto result){      // 성공 결과 데이터 설정
         result.setSuccess(true);

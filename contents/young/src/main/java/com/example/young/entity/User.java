@@ -6,10 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -20,7 +17,8 @@ import java.util.stream.Collectors;
 
 @Builder
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class User implements UserDetails{
@@ -30,12 +28,12 @@ public class User implements UserDetails{
 
     @Column(nullable = false, unique = true)
     @NotBlank
-    @Size(min=6, max=12, message = "아이디는 2자 이상 12자 이하입니다.")
+    @Size(min=6, max=12, message = "아이디는 6자 이상 12자 이하입니다.")
     private String userId;      // 사용자 Id
 
     @Column(nullable = false)
     @NotBlank
-//    @Pattern(regexp = "[a-zA-Z1-9]{6,12}", message = "비밀번호는 영어와 숫자로 포함해서 6~12자리 이내로 사용하세요.")
+//    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$", message = "비밀번호는 영어와 숫자로 포함해서 6~12자리 이내로 사용하세요.")
     private String password;    // 사용자 password
 
     @Column(nullable = false)

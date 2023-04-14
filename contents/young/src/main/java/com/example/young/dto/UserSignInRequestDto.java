@@ -16,7 +16,7 @@ public class UserSignInRequestDto {
     String id;
 
     @NotBlank
-//    @Pattern(regexp = "[a-zA-Z1-9]{6,12}", message = "비밀번호는 영어와 숫자로 포함해서 6~12자리 이내로 사용하세요.")
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$", message = "비밀번호는 영어와 숫자로 포함해서 6~12자리 이내로 사용하세요.")
     String password;
 
     public UserSignInRequestDto(String id, String password){
