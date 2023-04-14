@@ -3,6 +3,7 @@ package com.springboot.todo.service;
 import com.springboot.todo.dto.TodoRequestDto;
 import com.springboot.todo.dto.TodoResponseDto;
 import com.springboot.todo.entity.Todo;
+import com.springboot.todo.entity.User;
 import com.springboot.todo.repository.TodoRepository;
 import com.springboot.todo.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,8 @@ public class TodoServiceImpl implements TodoService{
 
     @Override
     public List<TodoResponseDto> retrieveTodos(String userId) {
-        List<Todo> todoList = todoRepository.findByUser_Id(userId);
+        User user = userRepository.findByUserId(userId);
+        List<Todo> todoList = todoRepository.findByUser_Id(user.getId());
         List<TodoResponseDto> dtoList = todoList.stream().map(TodoResponseDto::new).collect(Collectors.toList());
         return dtoList;
     }
