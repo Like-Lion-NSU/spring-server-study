@@ -1,80 +1,98 @@
 package com.springboot.todo.controller;
 
-import com.springboot.todo.dto.UserRequestDTO;
-import com.springboot.todo.dto.UserResponseDTO;
-import com.springboot.todo.entity.User;
-import com.springboot.todo.security.TokenProvider;
+import com.springboot.todo.dto.*;
 import com.springboot.todo.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
-    private UserService userService;
-    private TokenProvider tokenProvider;
-    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService, TokenProvider tokenProvider){
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.tokenProvider = tokenProvider;
     }
 
     @GetMapping
-    public List<UserResponseDTO> retrieveUserList(){
-        List<User> users = userService.retrieveAll();
-        List<UserResponseDTO> dtos = users.stream().map(UserResponseDTO::new).collect(Collectors.toList());
-        return dtos;
+    public List<UserResponseDto> retrieveUsers(){
+        List<UserResponseDto> users = userService.retrieveUsers();
+        return users;
     }
 
     @PostMapping
-    public UserResponseDTO registerUser(@RequestBody UserRequestDTO dto){
-        User user = User.builder()
-                .id(null)
-                .userId(dto.getUserId())
-                .password(passwordEncoder.encode(dto.getPassword()))
-                .userName(dto.getUserName())
-                .build();
-        User created = userService.create(user);
-        UserResponseDTO response = new UserResponseDTO(created);
-        return response;
+    public SignUpResultDto signUp(@Validated @RequestBody SignUpRequestDto signUpRequestDto, Errors errors){
+        logger.info("[signIn] 회원가입을 수행합니다. id : {}", signUpRequestDto.getId());
+        if(errors.hasErrors()) {
+
+        }
+        SignUpResultDto signUpResultDto = userService.signUp(signUpRequestDto);
+        if(signUpResultDto.getCode()==0){
+            logger.info("[signUp] 회원가입을 완료했습니다. id : {}", signUpRequestDto.getId());
+        }
+        return signUpResultDto;
     }
 
     @PostMapping("/login")
-    public UserResponseDTO authenticate(@RequestBody UserRequestDTO dto){
-        User user = userService.getByCredentials(dto.getUserId(), dto.getPassword(), passwordEncoder);
-        UserResponseDTO response = new UserResponseDTO(user);
-        final String token = tokenProvider.createToken(user);
-        response.setToken(token);
-        return response;
+    public SignInResultDto signIn(@RequestBody SignInRequestDto signInRequestDto) throws RuntimeException {
+        logger.info("[signIn]로그인을 시도하고 있습니다. id : {}", signInRequestDto.getId());
+        SignInResultDto signInResultDto = userService.signIn(signInRequestDto);
+        if(signInResultDto.getCode()==0){
+            logger.info("[signIn] 정상적으로 로그인되었습니다. id : {}, token : {}", signInRequestDto.getId(), signInResultDto.getToken());
+            return signInResultDto;
+        }
+        return signInResultDto;
     }
 
     @GetMapping("/{id}")
-    public UserResponseDTO retrieveUser(@PathVariable Long id){
-        User user = userService.retrieveById(id);
-        UserResponseDTO dto = new UserResponseDTO(user);
-        return dto;
+    public UserResponseDto retrieveUser(@PathVariable Long id){
+        UserResponseDto user = userService.retrieveUser(id);
+        return user;
     }
 
     @PutMapping("/{id}")
-    public void updateUser(@AuthenticationPrincipal Long userId, @PathVariable Long id, @RequestBody UserRequestDTO dto){
-        User user = userService.retrieveById(userId);
-        user.setUserName(dto.getUserName());
-        user.setUserId(dto.getUserId());
-        user.setPassword(dto.getPassword());
-        userService.update(user);
+    public void updateUser(@PathVariable Long id, @Validated @RequestBody UserRequestDto userRequestDto, Errors errors){
+        if(errors.hasErrors()) {
+
+        }
+        userService.updateUser(id, userRequestDto);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@AuthenticationPrincipal String userId, @PathVariable Long id){
-        userService.delete(id);
+    public void deleteUser(@PathVariable Long id){
+        userService.deleteUser(id);
     }
 
+    @GetMapping("/exception")
+    public void exception() throws RuntimeException{
+        throw new RuntimeException("접근이 금지되었습니다");
+    }
+
+    @ExceptionHandler(value = Exception.class)
+    public ResponseEntity<Map<String, String>> ExceptionHandler(Exception e){
+        HttpHeaders responseHeaders = new HttpHeaders();
+        HttpStatus httpStatus= HttpStatus.BAD_REQUEST;
+
+        logger.error("ExceptionHandler 호출, {}, {}", e.getCause(), e.getMessage());
+
+        Map<String, String> map = new HashMap<>();
+        map.put("error type", httpStatus.getReasonPhrase());
+        map.put("code", "400");
+        map.put("message", "에러발생");
+
+        return new ResponseEntity<>(map, responseHeaders, httpStatus);
+    }
 }

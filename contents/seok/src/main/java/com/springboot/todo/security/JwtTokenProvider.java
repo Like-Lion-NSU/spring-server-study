@@ -71,7 +71,6 @@ public class JwtTokenProvider {
     public String resolveToken(HttpServletRequest request) {
         logger.info("[resolveToken] HTTP 헤더에서 Toeken 값 추출");
         String bearerToken = request.getHeader("Authorization");
-
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }

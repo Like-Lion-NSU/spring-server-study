@@ -10,7 +10,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 public class SecurityConfiguration{
-
     private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
@@ -25,14 +24,13 @@ public class SecurityConfiguration{
                 .csrf().disable()
                 .httpBasic().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/", "/user/**").permitAll()
+                .requestMatchers("/", "/users", "/users/login").permitAll()
                 .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .requestMatchers("/users/exception").permitAll()
                 .requestMatchers("**exception**").permitAll()
-                .anyRequest().hasRole("ADMIN")
-
+                .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())
                 .and()

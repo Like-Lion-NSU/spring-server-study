@@ -1,14 +1,18 @@
 package com.springboot.todo.service;
 
-import com.springboot.todo.entity.Todo;
+import com.springboot.todo.dto.TodoRequestDto;
+import com.springboot.todo.dto.TodoResponseDto;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface TodoService {
-    List<Todo> retrieveTodoList(Long id);
-    Long saveTodo(Todo todo);
-    Optional<Todo> retrieveTodo(Long id);
-    void updateTodo(Todo todo);
-    void deleteTodo(Long id);
+    List<TodoResponseDto> retrieveTodos(String userId);
+
+    TodoResponseDto retrieveTodo(Long id) throws Exception;
+
+    Long saveTodo(String userId, TodoRequestDto dto);
+
+    void updateTodo(Long id, TodoRequestDto dto);
+
+    void deleteTodo(Long id) throws Exception;
 }

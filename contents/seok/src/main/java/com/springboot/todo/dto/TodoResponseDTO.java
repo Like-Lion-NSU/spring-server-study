@@ -1,29 +1,31 @@
 package com.springboot.todo.dto;
 
-import com.springboot.todo.dto.old.TodoDTO;
 import com.springboot.todo.entity.Todo;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TodoResponseDTO {
+@ToString
+@Builder
+public class TodoResponseDto {
+    private Long id;
     private String item;
+    private String userId;
     private boolean isDone;
+    private LocalDateTime createdDate;
+    private LocalDateTime updatedDate;
 
-    public TodoResponseDTO(Todo todo){
+    public TodoResponseDto(final Todo todo){
+        this.id = todo.getId();
         this.item = todo.getItem();
+        this.userId = todo.getUser().getUserId();
         this.isDone = todo.isDone();
+        this.createdDate = todo.getCreatedDate();
+        this.updatedDate = todo.getUpdatedDate();
     }
 
-    public static Todo toEntity(TodoRequestDTO dto){
-        return Todo.builder()
-                .item(dto.getItem())
-                .isDone(dto.isDone())
-                .build();
-    }
+
 }
