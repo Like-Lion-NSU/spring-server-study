@@ -1,6 +1,8 @@
 package com.example.young.dto;
 
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +11,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TodoEditRequestDto {
+
+    @NotNull
+//    @PositiveOrZero
     private Boolean isDone;
 
     public TodoEditRequestDto(Boolean isDone){

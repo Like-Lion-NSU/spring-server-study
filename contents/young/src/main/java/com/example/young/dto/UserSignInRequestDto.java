@@ -1,5 +1,8 @@
 package com.example.young.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -7,7 +10,13 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class UserSignInRequestDto {
+
+    @NotBlank
+    @Size(min=6, max=12, message = "아이디는 2자 이상 12자 이하입니다.")
     String id;
+
+    @NotBlank
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$", message = "비밀번호는 영어와 숫자로 포함해서 6~12자리 이내로 사용하세요.")
     String password;
 
     public UserSignInRequestDto(String id, String password){
