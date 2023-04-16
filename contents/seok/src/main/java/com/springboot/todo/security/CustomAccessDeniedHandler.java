@@ -18,6 +18,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         logger.info("[handle] 접근이 막혔을 경우 경로 리다이렉트");
-        response.sendRedirect("/user/exception");
+        response.sendRedirect("/users/exception");
     }
 }

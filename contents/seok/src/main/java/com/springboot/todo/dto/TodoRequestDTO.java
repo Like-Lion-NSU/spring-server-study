@@ -1,15 +1,27 @@
 package com.springboot.todo.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.springboot.todo.entity.Todo;
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TodoRequestDTO {
+@ToString
+@Builder
+public class TodoRequestDto {
+    @NotBlank
     private String item;
+
+    @AssertTrue
     private boolean isDone;
+
+    public static Todo toEntity(final TodoRequestDto dto) {
+        return Todo.builder()
+                .item(dto.getItem())
+                .isDone(dto.isDone())
+                .build();
+    }
+
 }

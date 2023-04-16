@@ -1,66 +1,68 @@
 package com.springboot.todo.controller;
 
-import com.springboot.todo.dto.TodoRequestDTO;
-import com.springboot.todo.dto.TodoResponseDTO;
-import com.springboot.todo.entity.Todo;
-import com.springboot.todo.entity.User;
+import com.springboot.todo.dto.TodoRequestDto;
+import com.springboot.todo.dto.TodoResponseDto;
 import com.springboot.todo.service.TodoService;
-import com.springboot.todo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/todo")
+@RequestMapping("/todos")
 public class TodoController {
-    private TodoService todoService;
-    private UserService userService;
+    private final TodoService todoService;
 
     @Autowired
-    public TodoController(TodoService todoService, UserService userService){
-        this.todoService = todoService;
-        this.userService = userService;
+    public TodoController(TodoService todoService){
+        this.todoService=todoService;
     }
 
     @GetMapping
-    public List<TodoResponseDTO> retrieveTodoList(@AuthenticationPrincipal Long userId){
-        User user = userService.retrieveById(userId);
-        List<Todo> todos = todoService.retrieveTodoList(user.getId());
-        List<TodoResponseDTO> dtos = todos.stream().map(TodoResponseDTO::new).collect(Collectors.toList());
+    public List<TodoResponseDto> retrieveTodos(@AuthenticationPrincipal UserDetails userDetails){
+        List<TodoResponseDto> dtos = todoService.retrieveTodos(userDetails.getUsername());
         return dtos;
     }
 
     @PostMapping
-    public Long saveTodo(@AuthenticationPrincipal Long userId, @RequestBody TodoRequestDTO dto){
-        Todo todo = TodoResponseDTO.toEntity(dto);
-        todo.setId(null);
-        todo.setUser(userService.retrieveById(userId));
-        todo.setCreatedDate(LocalDateTime.now());
-        return todoService.saveTodo(todo);
+    public Long saveTodo(@AuthenticationPrincipal UserDetails userDetails, @Validated @RequestBody TodoRequestDto todoRequestDto, Errors errors){
+//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        User user = (User) principal;
+        Long todoId = todoService.saveTodo(userDetails.getUsername(), todoRequestDto);
+        if(errors.hasErrors()) {
+
+        }
+        return todoId;
     }
 
     @GetMapping("/{id}")
-    public TodoResponseDTO retrieveTodo(@AuthenticationPrincipal Long userId, @PathVariable Long id){
-        Todo todo =  todoService.retrieveTodo(id).get();
-        TodoResponseDTO dto = new TodoResponseDTO(todo);
-        return dto;
+    public TodoResponseDto retrieveTodo(@PathVariable Long id){
+        try {
+            TodoResponseDto dto = todoService.retrieveTodo(id);
+            return dto;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @PutMapping("/{id}")
-    public void updateTodo(@AuthenticationPrincipal Long userId, @PathVariable Long id, @RequestBody TodoRequestDTO dto){
-        Todo todo = todoService.retrieveTodo(id).get();
-        todo.setItem(dto.getItem());
-        todo.setDone(dto.isDone());
-        todo.setUpdatedDate(LocalDateTime.now());
-        todoService.updateTodo(todo);
+    public void updateTodo(@PathVariable Long id, @Validated @RequestBody TodoRequestDto todoRequestDto, Errors errors){
+        if(errors.hasErrors()) {
+
+        }
+        todoService.updateTodo(id,todoRequestDto);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteTodo(@AuthenticationPrincipal Long userId, @PathVariable Long id){
-        todoService.deleteTodo(id);
+    public void deleteTodo(@PathVariable Long id) {
+        try {
+            todoService.deleteTodo(id);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
