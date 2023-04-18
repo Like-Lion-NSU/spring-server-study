@@ -2,10 +2,7 @@ package com.example.hana.Service;
 
 import com.example.hana.Config.CommonResponse;
 import com.example.hana.Config.JwtTokenProvider;
-import com.example.hana.Dto.SignInResultDto;
-import com.example.hana.Dto.SignUpResultDto;
-import com.example.hana.Dto.UserSignInRequestDto;
-import com.example.hana.Dto.UserSignUpRequestDto;
+import com.example.hana.Dto.*;
 import com.example.hana.Entity.User;
 import com.example.hana.Repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -14,8 +11,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
+import java.util.List;
+import java.util.Optional;
 
-import java.util.Collections;
+import java.util.*;
 
 import static org.hibernate.sql.ast.SqlTreeCreationLogger.LOGGER;
 
@@ -35,6 +37,27 @@ public class SignServiceImpl implements SignService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    //회원가입시 유효성 체크 진행
+    @Transactional(readOnly = true)
+    public Map<String, String> validateHandling(Errors errors){
+        Map<String, String> validatorResult = new HashMap<>();
+
+     /* 유효성 검사에 실패한 필드 목록을 받음 */
+   for (FieldError error : errors.getFieldErrors()) {
+    String validKeyName = String.format("valid_%s", error.getField());
+    validatorResult.put(validKeyName, error.getDefaultMessage());
+       }
+      return validatorResult;
+    }
+
+/* 아이디 중복 여부 확인 */
+        @Transactional(readOnly = true)
+     public void checkUserIdDuplication(UserSignUpRequestDto userSignUpRequestDto) {
+     boolean userIdDuplicate = userRepository.existsByUserId(userSignUpRequestDto.toEntity().getUserId());
+     if (userIdDuplicate) {
+             throw new IllegalStateException("이미 존재하는 아이디입니다.");
+    }
+}
     //회원가입
     @Override
     public SignUpResultDto signUp(UserSignUpRequestDto userSignUpRequestDto) {
@@ -45,14 +68,14 @@ public class SignServiceImpl implements SignService {
       //role 객체가 admin일 땐 user entity의 roles 변수에 ROLE_ADMIN 저장
         if (userSignUpRequestDto.getRole().equals("admin")) {
             user = User.builder()
-                    .userId(userSignUpRequestDto.getId())
+                    .userId(userSignUpRequestDto.getUserId())
                     .name(userSignUpRequestDto.getName())
                     .password(passwordEncoder.encode(userSignUpRequestDto.getPassword()))
                     .roles(Collections.singletonList("ROLE_ADMIN")) //user entity의 roles는 list여서 Collections.singletonList() 사용
                     .build();
         } else {
             user = User.builder()
-                    .userId(userSignUpRequestDto.getId())
+                    .userId(userSignUpRequestDto.getUserId())
                     .name(userSignUpRequestDto.getName())
                     .password(passwordEncoder.encode(userSignUpRequestDto.getPassword()))
                     .roles(Collections.singletonList("ROLE_USER"))
@@ -75,7 +98,7 @@ public class SignServiceImpl implements SignService {
     public SignInResultDto signIn(UserSignInRequestDto userSignInRequestDto) throws RuntimeException {
         LOGGER.info("[getSignInResult] signDataHandler로 회원 정보 요청 ");
 
-        User user = userRepository.findByUserId(userSignInRequestDto.getId()).orElse(null);
+        User user = userRepository.findByUserId(userSignInRequestDto.getId()).get();
         logger.info("[getSignInResult] Id : {}",
                 userSignInRequestDto.getId());
 
@@ -95,7 +118,35 @@ public class SignServiceImpl implements SignService {
 
         return signInResultDto;
     }
+    //User 전체 조회
+    @Override
+    public List<User> findUsers(){
+        return userRepository.findAll();
+    }
 
+    //User 특정 조회
+    @Override
+    public Optional<User> findOne(String id) throws NoSuchElementException{
+        User user = userRepository.findByUserId(id).orElseThrow(() -> new  NoSuchElementException("존재하지 않는 회원입니다."));
+        return userRepository.findByUserId(id);
+    }
+
+      //User 수정
+    @Override
+    public void editUser(String id, UserEditRequestDto userUpdateRequestDto) throws NoSuchElementException{
+        User user = userRepository.findByUserId(id).orElseThrow(() -> new  NoSuchElementException("존재하지 않는 회원입니다."));
+        user.setUserId(userUpdateRequestDto.getId());
+        user.setName(userUpdateRequestDto.getName());
+        user.setPassword(userUpdateRequestDto.getPassword());
+
+        userRepository.save(user);
+    }
+    //User 삭제
+    @Override
+    public void deleteUser(Long id) throws NoSuchElementException{
+        userRepository.findById(id).orElseThrow(()-> new  NoSuchElementException("존재하지 않는 회원입니다."));
+        userRepository.deleteById(id);
+    }
     private void setSuccessResult(SignUpResultDto result) {
 
         result.setSuccess(true);

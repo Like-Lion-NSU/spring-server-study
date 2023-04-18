@@ -17,7 +17,7 @@ public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    @Autowired
+
     public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
@@ -43,9 +43,13 @@ public class SecurityConfig {
 
 //                .anyRequest().hasRole("ADMIN")
 
+                // permitAll이 아닌 다른 요청에 대해서는 인가된게 아니면 접근 금지시킴
+                .anyRequest().authenticated()
                 .and()
+
                 .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())
                 .and()
+
                 .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint())
 
                 .and()
