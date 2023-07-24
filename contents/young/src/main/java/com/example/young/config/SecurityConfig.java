@@ -45,8 +45,6 @@ public class SecurityConfig {
                 // 인증된 권한(ADMIN)을 가진 사용자에게 허용
                 //.anyRequest().hasRole("ADMIN")
 
-                // permitAll이 아닌 다른 요청에 대해서는 인가된게 아니면 접근 금지시킴
-                .anyRequest().authenticated()
                 .and()
                 // 권한을 확인하는 과정에서 통과하지 못하는 예외가 발생할 경우 예외 전달
                 .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())

@@ -3,10 +3,10 @@ package com.example.young.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -17,8 +17,7 @@ import java.util.stream.Collectors;
 
 @Builder
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class User implements UserDetails{
@@ -27,18 +26,12 @@ public class User implements UserDetails{
     private Long id;        // 식별 키
 
     @Column(nullable = false, unique = true)
-    @NotBlank
-    @Size(min=6, max=12, message = "아이디는 6자 이상 12자 이하입니다.")
     private String userId;      // 사용자 Id
 
     @Column(nullable = false)
-    @NotBlank
-//    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$", message = "비밀번호는 영어와 숫자로 포함해서 6~12자리 이내로 사용하세요.")
     private String password;    // 사용자 password
 
     @Column(nullable = false)
-    @NotBlank
-    @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9-_]{2,4}$", message = "이름은 특수문자를 제외한 2~4자리여야 합니다.")
     private String name;        // 사용자 이름
 
     @JsonManagedReference
