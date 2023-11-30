@@ -45,7 +45,7 @@
     `기타`
 ## 📚스터디 주제      
 ### todo-list ERD 설계 및 DB 연동
-- 1주차 2023.01.16(월) - 2023.01.22(일)
+- 1주차
     1. `todo-list 프로젝트 시작`
     1. tool: ERD cloud 등
     2. JDBC, MYSQL를 이용한 DB 연동
@@ -55,30 +55,30 @@
 
 ***
 ### todo-list API 명세서 작성/로직 구현
-- 3,4주차 2023.01.23(월) - 2023.02.05(일)
-1.  todo-list API 명세서 작성
+- 3,4주차
+  1.  todo-list API 명세서 작성
     1. 문서 작성(예시:노션)
     2. swagger 띄우기
-2. service 구현
-3. controller 구현
-4. 구현한 서버 시현
+  2. service 구현
+  3. controller 구현
+  4. 구현한 서버 시현
     1. swagger
     2. postman
     3. 그 외
 ***
 ### todo-list Login API 구현
-- 5,6,7주차 2023.02.06(월) - 2023.02.26(일)
+- 5,6,7주차
   `5주차`
     - Access Token을 활용한 인증(JWT)
     - spring security + JWT
-      `6주차`
+  `6주차`
     - Login API 명세서
     - Login 관련 구현
     - Login API 시현
 ***
 ### 유효성 검사와 예외처리
-- 8주차 2023.02.27(월) - 2023.03.05(일)
-- 유효성 검사
-- 예외 처리
-- todo-list 프로젝트에 적용하기
+- 8주차
+  1. 유효성 검사
+  2. 예외 처리
+  3. todo-list 프로젝트에 적용하기
 
