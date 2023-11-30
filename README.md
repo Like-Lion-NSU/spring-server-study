@@ -67,7 +67,7 @@
     3. 그 외
 ***
 ### todo-list Login API 구현
-- 5,6,7주차
+- 5,6,7주차  
   `5주차`
     - Access Token을 활용한 인증(JWT)
     - spring security + JWT
