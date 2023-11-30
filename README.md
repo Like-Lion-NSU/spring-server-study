@@ -70,7 +70,8 @@
 - 5,6,7주차  
   `5주차`
     - Access Token을 활용한 인증(JWT)
-    - spring security + JWT  
+    - spring security + JWT
+       
   `6주차`  
     - Login API 명세서
     - Login 관련 구현
