@@ -113,13 +113,14 @@ public class UserServiceImpl implements UserService {
     //User 특정 조회
     @Override
     public Optional<User> findOne(String id){
+        User user = userRepository.findByUserId(id).orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
         return userRepository.findByUserId(id);
     }
 
     //User 수정
     @Override
     public void updateUser(String id, UserUpdateRequestDto userUpdateRequestDto){
-        User user = userRepository.findByUserId(id).orElse(null);
+        User user = userRepository.findByUserId(id).orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
         user.setUserId(userUpdateRequestDto.getId());
         user.setName(userUpdateRequestDto.getName());
         user.setPassword(userUpdateRequestDto.getPassword());
@@ -130,6 +131,7 @@ public class UserServiceImpl implements UserService {
     //User 삭제
     @Override
     public void deleteUser(Long id){
+        userRepository.findById(id).orElseThrow(()-> new RuntimeException("존재하지 않는 회원입니다."));
         userRepository.deleteById(id);
     }
 

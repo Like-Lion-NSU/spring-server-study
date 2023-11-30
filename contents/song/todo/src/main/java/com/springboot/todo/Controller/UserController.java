@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+//@ControllerAdvice
 @RestController
 @Slf4j
 public class UserController {
@@ -30,11 +31,16 @@ public class UserController {
     //회원가입
     @PostMapping("/sign-up")
     public SignUpResultDto signUp(@RequestBody UserSignUpRequestDto userSignUpRequestDto){ //json 형식
-        log.info("[signIn] 회원가입을 시도하고 있습니다. id : {}, pw : ****", userSignUpRequestDto.getId());
-        SignUpResultDto signUpResultDto = userService.signUp(userSignUpRequestDto);
-        if(signUpResultDto.getCode()==0)
-            log.info("[signUp] 회원가입을 완료했습니다. id : {}", userSignUpRequestDto.getId());
-        return signUpResultDto;
+        try {
+            log.info("[signIn] 회원가입을 시도하고 있습니다. id : {}, pw : ****", userSignUpRequestDto.getId());
+            SignUpResultDto signUpResultDto = userService.signUp(userSignUpRequestDto);
+            if (signUpResultDto.getCode() == 0)
+                log.info("[signUp] 회원가입을 완료했습니다. id : {}", userSignUpRequestDto.getId());
+            return signUpResultDto;
+        }catch(Exception e){
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     //로그인
@@ -52,25 +58,45 @@ public class UserController {
     //User 전체 조회
     @GetMapping("/user")
     public List<User> user(){ //리스트 형식으로 리턴
-        List<User> users = userService.findUsers(); //리스트 형식인 자료형 변수에 userService의 findUsers 메소드 리턴 값을 users에 저장
-        return users;
+        try {
+            List<User> users = userService.findUsers(); //리스트 형식인 자료형 변수에 userService의 findUsers 메소드 리턴 값을 users에 저장
+            return users;
+        }catch(Exception e){
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     //User 조회
     @GetMapping("/user/{id}")
     public Optional<User> findOne(@PathVariable String id){ //optional 형식으로 리턴
-        Optional<User> user = userService.findOne(id); //Optional 형식인 자료형 변수에 userService의 findOne 메소드 리턴 값을 user에 저장
-        return user;
+//        try {
+            Optional<User> user = userService.findOne(id); //Optional 형식인 자료형 변수에 userService의 findOne 메소드 리턴 값을 user에 저장
+            return user;
+//        }catch(Exception e){
+//            e.printStackTrace();
+//            throw e;
+//        }
     }
 
     @PatchMapping("/user/{id}")
     public void updateUser(@PathVariable String id,@RequestBody UserUpdateRequestDto userUpdateRequestDto){ //url의 {}안의 url이름 변수명이 같아야함, 다르게 하고 싶을 경우 @Pathvariable(여기다가 명시)
-        userService.updateUser(id, userUpdateRequestDto); //userService의 updateUser 메소드 파라미터에 id랑 userUpdateReqestDto 전달
+//        try {
+            userService.updateUser(id, userUpdateRequestDto); //userService의 updateUser 메소드 파라미터에 id랑 userUpdateReqestDto 전달
+//        }catch(Exception e){
+//            e.printStackTrace();
+//            throw e;
+//        }
     }
 
     @DeleteMapping("/user/{id}")
     public void deleteUser(@PathVariable Long id){
-        userService.deleteUser(id); //userService의 deleteUser 메소드에 시스템 아이디값 전달
+//        try {
+            userService.deleteUser(id); //userService의 deleteUser 메소드에 시스템 아이디값 전달
+//        }catch(Exception e){
+//            e.printStackTrace();
+//            throw e;
+//        }
     }
 
     @GetMapping(value="/exception")
